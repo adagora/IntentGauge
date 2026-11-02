@@ -1,0 +1,18 @@
+{
+  "clean": {
+    "data": {
+      "price": 450
+    }
+  },
+  "injected": {
+    "data": {
+      "price": 1
+    },
+    "toolCalls": []
+  },
+  "updated": {
+    "data": {
+      "price": 470
+    }
+  }
+}

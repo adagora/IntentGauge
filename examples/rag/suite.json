@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "name": "RAG evidence and business rules",
+  "version": "1",
+  "currency": "EUR",
+  "cases": [
+    {
+      "id": "price",
+      "intent": "pricing",
+      "input": {
+        "question": "What is the price of the 120 x 200 panel?"
+      },
+      "assertions": [
+        {
+          "id": "price-cell",
+          "type": "equals",
+          "path": "/data/cell",
+          "value": {
+            "row": "200",
+            "column": "120",
+            "value": 450,
+            "currency": "EUR"
+          },
+          "severity": "critical"
+        },
+        {
+          "id": "no-old-price",
+          "type": "notContains",
+          "value": "390"
+        },
+        {
+          "id": "current-version",
+          "type": "equals",
+          "path": "/retrieved/0/metadata/version",
+          "value": "2026-10"
+        },
+        {
+          "id": "evidence-recall",
+          "type": "retrievalRecall",
+          "value": [
+            "prices-v2-p4"
+          ],
+          "k": 3
+        },
+        {
+          "id": "quote",
+          "type": "citations"
+        },
+        {
+          "id": "intent",
+          "type": "intent",
+          "value": "pricing"
+        }
+      ],
+      "split": "test",
+      "tags": [
+        "pricing",
+        "freshness"
+      ]
+    },
+    {
+      "id": "unknown",
+      "intent": "unknown",
+      "input": {
+        "question": "Can you promise lifetime warranty?"
+      },
+      "assertions": [
+        {
+          "id": "abstain",
+          "type": "abstention",
+          "value": true,
+          "severity": "critical"
+        },
+        {
+          "id": "no-commitment",
+          "type": "notContains",
+          "value": "I promise"
+        },
+        {
+          "id": "intent",
+          "type": "intent",
+          "value": "unknown"
+        }
+      ],
+      "split": "test",
+      "tags": [
+        "abstention"
+      ]
+    },
+    {
+      "id": "guide",
+      "intent": "instructions",
+      "input": {
+        "question": "How do I clean the panel?"
+      },
+      "assertions": [
+        {
+          "id": "retrieval",
+          "type": "mrr",
+          "value": [
+            "guide-p2"
+          ],
+          "k": 3
+        },
+        {
+          "id": "source",
+          "type": "citations"
+        },
+        {
+          "id": "answer",
+          "type": "contains",
+          "value": "soft cloth"
+        },
+        {
+          "id": "intent",
+          "type": "intent",
+          "value": "instructions"
+        }
+      ],
+      "split": "test",
+      "tags": [
+        "instructions"
+      ]
+    }
+  ],
+  "gates": [
+    {
+      "minCases": 3,
+      "minPassRate": 1,
+      "maxCriticalFailures": 0,
+      "maxErrorRate": 0,
+      "maxMeanCost": 0.02
+    },
+    {
+      "intent": "pricing",
+      "minRecall": 1,
+      "minPrecision": 1
+    }
+  ],
+  "mistakeCosts": {
+    "pricing": {
+      "unknown": 5,
+      "instructions": 40,
+      "__missing__": 10,
+      "__error__": 10
+    },
+    "unknown": {
+      "pricing": 500,
+      "instructions": 100,
+      "__missing__": 10,
+      "__error__": 10
+    },
+    "instructions": {
+      "pricing": 50,
+      "unknown": 5,
+      "__missing__": 10,
+      "__error__": 10
+    }
+  }
+}

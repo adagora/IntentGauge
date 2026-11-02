@@ -1,0 +1,17 @@
+
+> evallol@0.1.0 citywheels
+> npm run build && node integrations/citywheels/run.mjs
+
+
+> evallol@0.1.0 build
+> tsc -p tsconfig.json
+
+{
+  "provider": "fake (actual agent loop; no live LLM)",
+  "cases": 26,
+  "baselinePassed": true,
+  "regressionDetected": true,
+  "dashboard": "/Users/gora/AI_Project/evalLOL/runs/citywheels-2026-11-02T17-17-49-425Z/dashboard.html",
+  "regressionDashboard": "/Users/gora/AI_Project/evalLOL/runs/citywheels-2026-11-02T17-17-49-425Z-injected-regression/dashboard.html",
+  "comparison": "/Users/gora/AI_Project/evalLOL/runs/citywheels-2026-11-02T17-17-49-425Z/comparison.json"
+}

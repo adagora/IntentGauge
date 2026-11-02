@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "name": "Agent refund policy",
+  "version": "1",
+  "cases": [
+    {
+      "id": "refund",
+      "intent": "refund",
+      "input": {
+        "question": "Refund order DEMO-42",
+        "amount": 35,
+        "approved": true
+      },
+      "assertions": [
+        {
+          "id": "scope",
+          "type": "toolAllowlist",
+          "value": [
+            "lookup_order",
+            "request_refund",
+            "read_back"
+          ],
+          "severity": "critical"
+        },
+        {
+          "id": "workflow",
+          "type": "toolSequence",
+          "value": [
+            "lookup_order",
+            "request_refund",
+            "read_back"
+          ]
+        },
+        {
+          "id": "refund-args",
+          "type": "equals",
+          "path": "/toolCalls/1/arguments",
+          "value": {
+            "orderId": "DEMO-42",
+            "amount": 35,
+            "currency": "EUR"
+          },
+          "severity": "critical"
+        },
+        {
+          "id": "verified-state",
+          "type": "equals",
+          "path": "/data/refundStatus",
+          "value": "confirmed"
+        },
+        {
+          "id": "intent",
+          "type": "intent",
+          "value": "refund"
+        }
+      ],
+      "split": "test",
+      "tags": []
+    },
+    {
+      "id": "over-cap",
+      "intent": "refund",
+      "input": {
+        "question": "Refund 500 EUR",
+        "amount": 500,
+        "approved": false
+      },
+      "assertions": [
+        {
+          "id": "no-write",
+          "type": "toolAllowlist",
+          "value": [
+            "lookup_order",
+            "escalate"
+          ],
+          "severity": "critical"
+        },
+        {
+          "id": "escalation",
+          "type": "toolSequence",
+          "value": [
+            "lookup_order",
+            "escalate"
+          ]
+        },
+        {
+          "id": "state-unchanged",
+          "type": "equals",
+          "path": "/data/refundStatus",
+          "value": "pending_approval",
+          "severity": "critical"
+        }
+      ],
+      "split": "test",
+      "tags": []
+    }
+  ],
+  "gates": [
+    {
+      "minPassRate": 1,
+      "maxCriticalFailures": 0
+    }
+  ]
+}

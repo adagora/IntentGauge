@@ -1,0 +1,219 @@
+[
+  {
+    "scenario": "summary-10000",
+    "iterations": 10,
+    "samplingInterval": 65536,
+    "totalSampledBytes": 870381408,
+    "frames": [
+      {
+        "frame": {
+          "functionName": "",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 51,
+          "columnNumber": 39
+        },
+        "sampledBytes": 286612128
+      },
+      {
+        "frame": {
+          "functionName": "slice",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 6,
+          "columnNumber": 21
+        },
+        "sampledBytes": 180482200
+      },
+      {
+        "frame": {
+          "functionName": "flatMap",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        "sampledBytes": 86723768
+      },
+      {
+        "frame": {
+          "functionName": "",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 52,
+          "columnNumber": 38
+        },
+        "sampledBytes": 85102080
+      },
+      {
+        "frame": {
+          "functionName": "flatMap",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        "sampledBytes": 45811352
+      },
+      {
+        "frame": {
+          "functionName": "filter",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        "sampledBytes": 44965552
+      },
+      {
+        "frame": {
+          "functionName": "",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 11,
+          "columnNumber": 34
+        },
+        "sampledBytes": 30290528
+      },
+      {
+        "frame": {
+          "functionName": "set",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        "sampledBytes": 27269160
+      },
+      {
+        "frame": {
+          "functionName": "flatMap",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        "sampledBytes": 25520504
+      },
+      {
+        "frame": {
+          "functionName": "",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 49,
+          "columnNumber": 49
+        },
+        "sampledBytes": 21244400
+      }
+    ],
+    "warning": "Statistical allocation estimates including collected objects, not retained heap or isolated RSS. Relation fixture preparation included."
+  },
+  {
+    "scenario": "calibration-skew-10000",
+    "iterations": 10,
+    "samplingInterval": 65536,
+    "totalSampledBytes": 51008016,
+    "frames": [
+      {
+        "frame": {
+          "functionName": "calibrate",
+          "scriptId": "156",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/calibration.js",
+          "lineNumber": 10,
+          "columnNumber": 25
+        },
+        "sampledBytes": 44283616
+      },
+      {
+        "frame": {
+          "functionName": "add",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        "sampledBytes": 6724400
+      }
+    ],
+    "warning": "Statistical allocation estimates including collected objects, not retained heap or isolated RSS. Relation fixture preparation included."
+  },
+  {
+    "scenario": "relations-5000",
+    "iterations": 10,
+    "samplingInterval": 65536,
+    "totalSampledBytes": 63251296,
+    "frames": [
+      {
+        "frame": {
+          "functionName": "relationCheck",
+          "scriptId": "158",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/relations.js",
+          "lineNumber": 2,
+          "columnNumber": 29
+        },
+        "sampledBytes": 27274704
+      },
+      {
+        "frame": {
+          "functionName": "applyRelations",
+          "scriptId": "158",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/relations.js",
+          "lineNumber": 21,
+          "columnNumber": 30
+        },
+        "sampledBytes": 20971208
+      },
+      {
+        "frame": {
+          "functionName": "",
+          "scriptId": "89",
+          "url": "file:///Users/gora/AI_Project/evalLOL/scripts/profile-evidence.mjs",
+          "lineNumber": 43,
+          "columnNumber": 36
+        },
+        "sampledBytes": 5770912
+      },
+      {
+        "frame": {
+          "functionName": "set",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        "sampledBytes": 4613432
+      },
+      {
+        "frame": {
+          "functionName": "slice",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        "sampledBytes": 2818752
+      },
+      {
+        "frame": {
+          "functionName": "split",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        "sampledBytes": 1442144
+      },
+      {
+        "frame": {
+          "functionName": "map",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        "sampledBytes": 360144
+      }
+    ],
+    "warning": "Statistical allocation estimates including collected objects, not retained heap or isolated RSS. Relation fixture preparation included."
+  }
+]

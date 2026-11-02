@@ -1,0 +1,25 @@
+import { run, validateSuite, readJson, saveReport, compare } from '../../dist/src/index.js';
+import { renderProjectDashboard } from '../../dist/src/dashboard-project.js';
+import { target } from './target.mjs';
+import { target as regressed } from './regressed.mjs';
+import { writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+const suite=validateSuite(await readJson(new URL('./suite.json',import.meta.url)));
+const stamp=new Date().toISOString().replace(/[:.]/g,'-');
+const directory=resolve('runs/citywheels-'+stamp);
+const options={concurrency:4,timeoutMs:30000};
+const baseline=await run(suite,target,options);
+await saveReport(baseline,directory);
+await writeFile(directory+'/suite.json',JSON.stringify(suite,null,2)+'\n',{flag:'wx',mode:0o600});
+if(process.argv.includes('--check')){await writeFile(directory+'/dashboard.html',renderProjectDashboard(baseline,suite),{flag:'wx',mode:0o600});console.log(JSON.stringify({passed:baseline.passed,report:directory+'/report.json',dashboard:directory+'/dashboard.html'},null,2));process.exit(baseline.passed?0:1);}
+const candidate=await run(suite,regressed,options);
+const candidateDirectory=directory+'-injected-regression';
+await saveReport(candidate,candidateDirectory);
+await writeFile(candidateDirectory+'/suite.json',JSON.stringify(suite,null,2)+'\n',{flag:'wx',mode:0o600});
+const comparison=compare(baseline,candidate);
+await writeFile(directory+'/comparison.json',JSON.stringify(comparison,null,2)+'\n',{flag:'wx',mode:0o600});
+await writeFile(candidateDirectory+'/comparison.json',JSON.stringify(comparison,null,2)+'\n',{flag:'wx',mode:0o600});
+await writeFile(directory+'/dashboard.html',renderProjectDashboard(baseline,suite),{flag:'wx',mode:0o600});
+await writeFile(candidateDirectory+'/dashboard.html',renderProjectDashboard(candidate,suite,{baseline}),{flag:'wx',mode:0o600});
+console.log(JSON.stringify({provider:'fake (actual agent loop; no live LLM)',cases:baseline.results.length,baselinePassed:baseline.passed,regressionDetected:!comparison.passed,dashboard:directory+'/dashboard.html',regressionDashboard:candidateDirectory+'/dashboard.html',comparison:directory+'/comparison.json'},null,2));
+if(!baseline.passed||comparison.passed)process.exitCode=1;

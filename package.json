@@ -1,0 +1,22 @@
+{
+  "name": "evallol",
+  "version": "0.1.0",
+  "description": "Evidence-driven evaluations for RAG systems and agents",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "bin": { "evallol": "dist/src/cli.js" },
+  "exports": { ".": { "types": "./dist/src/index.d.ts", "import": "./dist/src/index.js" } },
+  "files": ["dist/src", "README.md", "examples", "docs"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test dist/test/*.test.js",
+    "verify": "npm test",
+    "citywheels:check": "npm run build && node integrations/citywheels/run.mjs --check",
+    "citywheels": "npm run build && node integrations/citywheels/run.mjs",
+    "dashboard:export": "npm run build && node scripts/export-dashboard.mjs",
+    "dashboard": "npm run build && node dist/src/cli.js dashboard runs",
+    "demo": "npm run build && node dist/src/cli.js run examples/rag/suite.json --replay examples/rag/outputs.json",
+    "prepack": "npm run build"
+  },
+  "devDependencies": { "@types/node": "20.19.43", "typescript": "5.9.3" }
+}

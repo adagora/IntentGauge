@@ -1,0 +1,520 @@
+{
+  "schemaVersion": 1,
+  "judge": {
+    "name": "synthetic-demonstration",
+    "revision": "1"
+  },
+  "datasetVersion": "synthetic-v1",
+  "rows": [
+    {
+      "caseId": "case-0",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-1",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-2",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-3",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-4",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-5",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-6",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-7",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-8",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-9",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-10",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-11",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-12",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-13",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-14",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-15",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-16",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-17",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-18",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-19",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-20",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-21",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-22",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-23",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-24",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-25",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-26",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-27",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    },
+    {
+      "caseId": "case-28",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": true
+        },
+        {
+          "reviewer": "qa-2",
+          "value": true
+        }
+      ],
+      "judge": true
+    },
+    {
+      "caseId": "case-29",
+      "intent": "pricing",
+      "rubric": "correct-cell-v1",
+      "split": "holdout",
+      "humans": [
+        {
+          "reviewer": "qa-1",
+          "value": false
+        },
+        {
+          "reviewer": "qa-2",
+          "value": false
+        }
+      ],
+      "judge": false
+    }
+  ]
+}

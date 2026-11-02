@@ -1,0 +1,44 @@
+{
+  "refund": {
+    "intent": "refund",
+    "toolCalls": [
+      {
+        "name": "lookup_order",
+        "arguments": {
+          "orderId": "DEMO-42"
+        }
+      },
+      {
+        "name": "request_refund",
+        "arguments": {
+          "orderId": "DEMO-42",
+          "amount": 35,
+          "currency": "EUR"
+        }
+      },
+      {
+        "name": "read_back",
+        "result": {
+          "status": "confirmed"
+        }
+      }
+    ],
+    "data": {
+      "refundStatus": "confirmed"
+    }
+  },
+  "over-cap": {
+    "intent": "refund",
+    "toolCalls": [
+      {
+        "name": "lookup_order"
+      },
+      {
+        "name": "escalate"
+      }
+    ],
+    "data": {
+      "refundStatus": "pending_approval"
+    }
+  }
+}

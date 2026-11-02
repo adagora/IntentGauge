@@ -1,0 +1,73 @@
+
+> evallol@0.1.0 verify
+> npm test
+
+
+> evallol@0.1.0 test
+> npm run build && node --test dist/test/*.test.js
+
+
+> evallol@0.1.0 build
+> tsc -p tsconfig.json
+
+✔ flat calibration counters preserve exhaustive label combinations and group/evidence order (9.994083ms)
+✔ flat calibration matches the frozen baseline across randomized skew, rare groups and thresholds (89.122875ms)
+✔ flat calibration preserves unresolved/degenerate cases and validation failures (0.51ms)
+✔ configuration rejects empty data, unknown options, duplicate ids and invalid numbers (4.635ms)
+✔ exact structured business fields and JSON pointer escapes (0.832167ms)
+✔ forbidden content still fails when correct answer also appears (0.131375ms)
+✔ retrieval metrics match hand-computed ranking and empty results fail (0.2695ms)
+✔ citations need an actual retrieved document and literal quote (0.157792ms)
+✔ tool scope and workflow distinguish missing from observed empty tools (0.129458ms)
+✔ targets never receive gold assertions and concurrency preserves case order (23.119167ms)
+✔ target and judge failures are errors; other cases still execute (1.104667ms)
+✔ deadline aborts cooperative target and counts failure (10.987333ms)
+✔ judge malformed verdict and timeout cannot become passes (0.402333ms)
+✔ critical failures and errors block even permissive gates (0.329792ms)
+✔ unknown measurement and empty intent slice fail gates (0.231167ms)
+✔ repeats do not inflate case confidence and unstable case is not successful (0.190875ms)
+✔ classification counts absent predictions and asymmetric error costs (0.793459ms)
+✔ unpriced classification mistakes stay unknown, not zero (0.586625ms)
+✔ paired intervention catches vulnerability that independent checks miss (1.262667ms)
+✔ paired missing fields never pass unchanged relation (0.658625ms)
+✔ calibration requires independent held-out humans and adjudication (0.455ms)
+✔ calibration cannot pool a weak intent with a large strong intent (0.243375ms)
+✔ comparison rejects incomparable suites and finds paired regression (0.934625ms)
+✔ report escapes untrusted answer content and stable hashes ignore object key order (2.0965ms)
+✔ judge cannot mutate trusted observations or the dataset before subsequent checks (0.525083ms)
+✔ ordered tool sequence permits repeated calls (0.206ms)
+✔ positive-only calibration cannot approve an always-yes judge (0.1475ms)
+✔ truncated previews report insufficient citation evidence, not a fabricated quote verdict (0.056792ms)
+✔ custom evaluators carry revision identity and skipped checks remain visible (0.250958ms)
+✔ dashboard discovers new reports, skips partial artifacts, and excludes raw case evidence (23.356292ms)
+✔ dashboard controls recalculate article metrics, zero denominators, gates and incoming cases (23.350125ms)
+✔ watched dashboard follows new reports and preserves a manually pinned run (3.379333ms)
+✔ project dashboard binds executed evidence, escapes source text, and does not infer classification (4.580708ms)
+✔ calibration reflects edits, names blockers, clears canceled reads, and rejects stale selections (4.332042ms)
+✔ review packets preserve source text and require matching independent labels and adjudication (3.274ms)
+✔ comparison shows changes and persistent failures, rejects incompatible reports, and views restore history focus (2.505334ms)
+✔ default dashboard serves focused evidence, a run library and an explicit simulation route (9.980125ms)
+✔ reviewer exports round-trip through file imports and adjudicated evidence export (4.021375ms)
+✔ SSE decoder consumes split UTF-8, CRLF, and verification after final (40.632291ms)
+✔ SSE rejects stream error, malformed JSON and absent final (5.678916ms)
+✔ chatbot normalization keeps table/version evidence and omits raw prompts and unknown costs (0.4465ms)
+✔ HTTP target and judge request/response contracts with no gold leakage (mock transport) (4.01475ms)
+✔ chatbot adapter isolates conversations across repeats and retains late verification (mock transport) (1.423875ms)
+✔ CLI workflows: artifacts, successful suites, real regressions, validation and comparison (640.015666ms)
+✔ indexed relations pair shuffled sparse repetitions and preserve target traversal and check order (2.979417ms)
+✔ indexed relations retain last duplicate source and all duplicate targets (0.57275ms)
+✔ indexed relation errors preserve partial mutations and unmatched target behavior (6.405208ms)
+✔ indexed relation chains retain prior error precedence and ordered evidence (0.233584ms)
+✔ indexed relations match the frozen reference on randomized graphs, orders and evidence (61.773417ms)
+✔ aggregation preserves bitset boundaries, per-slice unique support and duplicated tag membership (22.367458ms)
+✔ aggregation preserves empty values, exact percentile, ordering, missing costs, zero scores and special names (2.186625ms)
+✔ standalone gates read current rows even if supplied summary slices are stale (0.141625ms)
+✔ aggregation and gates match the frozen baseline on randomized sparse checks, scopes and costs (434.858792ms)
+ℹ tests 53
+ℹ suites 0
+ℹ pass 53
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 778.92975

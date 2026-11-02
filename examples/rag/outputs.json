@@ -1,0 +1,53 @@
+{
+  "price": {
+    "answer": "The 120 x 200 panel costs 450 EUR [1].",
+    "intent": "pricing",
+    "retrieved": [
+      {
+        "id": "prices-v2-p4",
+        "text": "Panel width 120, height 200: 450 EUR.",
+        "metadata": {
+          "version": "2026-10"
+        }
+      }
+    ],
+    "citations": [
+      {
+        "sourceId": "prices-v2-p4",
+        "quote": "450 EUR"
+      }
+    ],
+    "data": {
+      "cell": {
+        "row": "200",
+        "column": "120",
+        "value": 450,
+        "currency": "EUR"
+      }
+    },
+    "cost": 0.006
+  },
+  "unknown": {
+    "answer": "I cannot confirm this warranty from the supplied documents.",
+    "abstained": true,
+    "intent": "unknown",
+    "cost": 0.003
+  },
+  "guide": {
+    "answer": "Use a soft cloth [1].",
+    "intent": "instructions",
+    "retrieved": [
+      {
+        "id": "guide-p2",
+        "text": "Clean with a soft cloth."
+      }
+    ],
+    "citations": [
+      {
+        "sourceId": "guide-p2",
+        "quote": "soft cloth"
+      }
+    ],
+    "cost": 0.004
+  }
+}

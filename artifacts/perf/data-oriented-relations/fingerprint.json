@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-11-02T16:58:03.686Z",
+  "node": "v26.8.1",
+  "v8": "14.6.202.34-node.28",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "kernel": "25.5.0",
+  "cpu": "Apple M1",
+  "logicalCpus": 8,
+  "totalMemory": 17179869184,
+  "freeMemory": 72155136,
+  "build": "tsc ES2022 / NodeNext; current installed Node",
+  "gitRevision": null,
+  "sourceHashes": {
+    "statistics": "f9ba79ab9dea910773ba8a3bc75dcc6c98c3b299638ac0ae8338a2fc95973d5b",
+    "calibration": "cdf765fd5b633843a403bc0f140bd54e2a7df2b2264abe067a894a561a90b156",
+    "relations": "9482a142c8bdc9d06281eef353bee3423c6e891095a6aab7856b0b37f288cbf1",
+    "runner": "6b9dba39d38e4dfab9b6bb5e87cd36c10597b359abf67bba7925f44b96140ea9"
+  },
+  "isolation": "Shared developer host; no affinity, power or kernel changes; other workloads uncontrolled",
+  "cacheState": "In-process V8 warmup (3 iterations); input objects resident; no application memoization",
+  "memoryLimitations": "RSS/heap high-water include fixture creation and preceding scenarios; not isolated per-scenario peaks"
+}

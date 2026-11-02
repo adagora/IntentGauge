@@ -1,0 +1,294 @@
+[
+  {
+    "scenario": "summary-10000",
+    "samples": 164,
+    "totalUs": 252855,
+    "frames": [
+      {
+        "frame": {
+          "functionName": "summarize",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 207,
+          "columnNumber": 25
+        },
+        "microseconds": 192509,
+        "percent": 76.13414802950308
+      },
+      {
+        "frame": {
+          "functionName": "collectSummary",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 141,
+          "columnNumber": 23
+        },
+        "microseconds": 184946,
+        "percent": 73.14310573253445
+      },
+      {
+        "frame": {
+          "functionName": "finish",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 61,
+          "columnNumber": 10
+        },
+        "microseconds": 86300,
+        "percent": 34.13023274208538
+      },
+      {
+        "frame": {
+          "functionName": "",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 88,
+          "columnNumber": 30
+        },
+        "microseconds": 65139,
+        "percent": 25.76140475766744
+      },
+      {
+        "frame": {
+          "functionName": "start",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 29,
+          "columnNumber": 9
+        },
+        "microseconds": 15154,
+        "percent": 5.993158134108481
+      },
+      {
+        "frame": {
+          "functionName": "add",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 39,
+          "columnNumber": 7
+        },
+        "microseconds": 15057,
+        "percent": 5.95479622708667
+      },
+      {
+        "frame": {
+          "functionName": "slotFor",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 146,
+          "columnNumber": 20
+        },
+        "microseconds": 7142,
+        "percent": 2.8245437108224083
+      },
+      {
+        "frame": {
+          "functionName": "add",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 39,
+          "columnNumber": 7
+        },
+        "microseconds": 2519,
+        "percent": 0.9962231318344505
+      }
+    ]
+  },
+  {
+    "scenario": "gates-10000",
+    "samples": 77,
+    "totalUs": 179551,
+    "frames": [
+      {
+        "frame": {
+          "functionName": "checkGates",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 234,
+          "columnNumber": 26
+        },
+        "microseconds": 83519,
+        "percent": 46.51547471192029
+      },
+      {
+        "frame": {
+          "functionName": "finish",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 61,
+          "columnNumber": 10
+        },
+        "microseconds": 53276,
+        "percent": 29.671792415525395
+      },
+      {
+        "frame": {
+          "functionName": "",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 88,
+          "columnNumber": 30
+        },
+        "microseconds": 31735,
+        "percent": 17.674643973021592
+      },
+      {
+        "frame": {
+          "functionName": "start",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 29,
+          "columnNumber": 9
+        },
+        "microseconds": 14736,
+        "percent": 8.20713891874732
+      },
+      {
+        "frame": {
+          "functionName": "add",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 39,
+          "columnNumber": 7
+        },
+        "microseconds": 3940,
+        "percent": 2.1943626044967726
+      },
+      {
+        "frame": {
+          "functionName": "criticalFailures",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 107,
+          "columnNumber": 25
+        },
+        "microseconds": 3855,
+        "percent": 2.1470222945012836
+      },
+      {
+        "frame": {
+          "functionName": "",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 90,
+          "columnNumber": 23
+        },
+        "microseconds": 1277,
+        "percent": 0.7112185395792838
+      },
+      {
+        "frame": {
+          "functionName": "end",
+          "scriptId": "155",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/statistics.js",
+          "lineNumber": 60,
+          "columnNumber": 7
+        },
+        "microseconds": 1273,
+        "percent": 0.7089907602853786
+      }
+    ]
+  },
+  {
+    "scenario": "calibration-skew-10000",
+    "samples": 67,
+    "totalUs": 109489,
+    "frames": [
+      {
+        "frame": {
+          "functionName": "calibrate",
+          "scriptId": "156",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/calibration.js",
+          "lineNumber": 10,
+          "columnNumber": 25
+        },
+        "microseconds": 77264,
+        "percent": 70.56781959831581
+      },
+      {
+        "frame": {
+          "functionName": "string",
+          "scriptId": "157",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/validation.js",
+          "lineNumber": 4,
+          "columnNumber": 22
+        },
+        "microseconds": 7588,
+        "percent": 6.9303765675090645
+      },
+      {
+        "frame": {
+          "functionName": "object",
+          "scriptId": "157",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/validation.js",
+          "lineNumber": 0,
+          "columnNumber": 22
+        },
+        "microseconds": 3807,
+        "percent": 3.4770616226287574
+      }
+    ]
+  },
+  {
+    "scenario": "relations-5000",
+    "samples": 37,
+    "totalUs": 84899,
+    "frames": [
+      {
+        "frame": {
+          "functionName": "applyRelations",
+          "scriptId": "158",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/relations.js",
+          "lineNumber": 21,
+          "columnNumber": 30
+        },
+        "microseconds": 36426,
+        "percent": 42.90509899998822
+      },
+      {
+        "frame": {
+          "functionName": "relationCheck",
+          "scriptId": "158",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/relations.js",
+          "lineNumber": 2,
+          "columnNumber": 29
+        },
+        "microseconds": 25209,
+        "percent": 29.69292924533858
+      },
+      {
+        "frame": {
+          "functionName": "pointer",
+          "scriptId": "167",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/evaluators.js",
+          "lineNumber": 1,
+          "columnNumber": 23
+        },
+        "microseconds": 23691,
+        "percent": 27.90492231946195
+      },
+      {
+        "frame": {
+          "functionName": "",
+          "scriptId": "167",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/evaluators.js",
+          "lineNumber": 2,
+          "columnNumber": 43
+        },
+        "microseconds": 16282,
+        "percent": 19.17808219178082
+      },
+      {
+        "frame": {
+          "functionName": "sourceAt",
+          "scriptId": "158",
+          "url": "file:///Users/gora/AI_Project/evalLOL/dist/src/relations.js",
+          "lineNumber": 52,
+          "columnNumber": 21
+        },
+        "microseconds": 1155,
+        "percent": 1.3604400522974358
+      }
+    ]
+  }
+]
