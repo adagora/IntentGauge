@@ -10,88 +10,180 @@ import { run } from './runner.js';
 import { startDashboard } from './dashboard.js';
 import { validateSuite } from './validation.js';
 import type { Evaluator, Judge, Observation, Target } from './types.js';
+import {
+  HELP, PARSE_OPTIONS, UsageError, capabilities, checkArity, commandHelp, finiteNumber, flagBag,
+  isCommand, isUsageError, machineHelp, optionalString, portNumber, positiveInt, rejectUnknownFlags,
+  robotDocs, robotTriage, toolVersion, unknownCommand, versionDocument,
+} from './cli-surface.js';
 
-const help = `IntentGauge. AI evaluation and regression evidence.
-Test behavior. See the evidence.
-
-Usage:
-  intentgauge dashboard RUNS_DIRECTORY [--port 4317]
-  intentgauge validate SUITE.json
-  intentgauge run SUITE.json (--replay OUTPUTS.json | --http URL | --module FILE | --chatbot URL) [options]
-  intentgauge compare BASELINE/report.json CANDIDATE/report.json
-  intentgauge calibrate LABELS.json [--min-cases 30] [--min-agreement 0.8]
-
-Run options:
-  --out DIR             New report directory (default runs/<timestamp>)
-  --revision ID         Required for HTTP/chatbot, identify model+prompt+index revision
-  --token-env NAME      Read authorization token from this environment variable
-  --concurrency N       Concurrent cases (default 4)
-  --repetitions N       Repeated trials (default 1)
-  --timeout-ms N        Timeout per target/evaluator call (default 30000)
-  --judge-http URL      Judge endpoint: {input,output,rubric} → {score,reason}
-  --judge-revision ID   Required for --judge-http
-  --judge-token-env NAME Environment variable for judge bearer token
-  --split NAME          dev, test or holdout; selection changes suite hash
-
-Module exports: target (required), judge (optional), evaluators (optional).
-Targets receive {id,input}, never assertions. Use .mjs/.js, or .ts on Node with TS support.
-HTTP uses Bearer token. Chatbot uses the exact token header required by that service.
-Live targets can have side effects. Replays require no services or credentials.
-Exit codes: 0 gates passed; 1 evaluation/regression/calibration failed; 2 configuration error.
-Reports contain outputs. No automatic retries; no deployment or policy changes.
-`;
-function env(name?: string) {
+function env(name: string | undefined): string | undefined {
   if (!name) return undefined;
-  const value = process.env[name]; if (!value) throw new Error(`Environment variable ${name} is missing or empty`); return value;
+  const value = process.env[name];
+  if (!value) throw new UsageError(`Environment variable ${name} is missing or empty.`, `intentgauge run SUITE.json --http URL --revision ID --token-env ${name}`);
+  return value;
 }
+
+async function loadJson(path: string, hint: string): Promise<unknown> {
+  try { return await readJson(path); }
+  catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new UsageError(message, hint);
+  }
+}
+
+function fail(message: string, hint?: string): never {
+  throw hint ? new UsageError(message, hint) : new Error(message);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+function isTarget(value: unknown): value is Target {
+  if (!isRecord(value)) return false;
+  return typeof value.name === 'string' && typeof value.revision === 'string' && typeof value.execute === 'function';
+}
+function isJudge(value: unknown): value is Judge {
+  if (!isRecord(value)) return false;
+  return typeof value.name === 'string' && typeof value.revision === 'string' && typeof value.evaluate === 'function';
+}
+function isEvaluator(value: unknown): value is Evaluator {
+  if (!isRecord(value)) return false;
+  return typeof value.id === 'string' && typeof value.revision === 'string' && typeof value.evaluate === 'function';
+}
+
 async function main() {
-  const { values: v, positionals: p } = parseArgs({ allowPositionals: true, strict: true, options: {
-    help: { type: 'boolean', short: 'h' }, port: { type: 'string' }, out: { type: 'string' }, replay: { type: 'string' }, http: { type: 'string' }, module: { type: 'string' }, chatbot: { type: 'string' }, revision: { type: 'string' },
-    'token-env': { type: 'string' }, concurrency: { type: 'string' }, repetitions: { type: 'string' }, 'timeout-ms': { type: 'string' }, split: { type: 'string' },
-    'judge-http': { type: 'string' }, 'judge-revision': { type: 'string' }, 'judge-token-env': { type: 'string' }, 'min-cases': { type: 'string' }, 'min-agreement': { type: 'string' },
-  } });
-  if (v.help || !p.length) { console.log(help); return; }
-  const [command, file, second] = p;
-  if (!['validate', 'run', 'compare', 'calibrate', 'dashboard'].includes(command!)) throw new Error(`Unknown command: ${command}. Use --help.`);
-  if (!file || p.length !== (command === 'compare' ? 3 : 2)) throw new Error(`Wrong arguments for ${command}. Use --help.`);
-  const allowed = command === 'dashboard' ? ['port'] : command === 'run' ? ['out','replay','http','module','chatbot','revision','token-env','concurrency','repetitions','timeout-ms','split','judge-http','judge-revision','judge-token-env'] : command === 'calibrate' ? ['min-cases','min-agreement'] : [];
-  for (const key of Object.keys(v)) if (key !== 'help' && !allowed.includes(key)) throw new Error(`--${key} does not apply to ${command}`);
+  let parsed: ReturnType<typeof parseArgs>;
+  try { parsed = parseArgs({ allowPositionals: true, strict: false, options: PARSE_OPTIONS }); }
+  catch (error) { fail(error instanceof Error ? error.message : String(error), 'intentgauge --help'); }
+  const values = flagBag(parsed.values);
+  const positionals = parsed.positionals;
+  const version = toolVersion();
+  if (values['robot-triage'] === true) {
+    rejectUnknownFlags(undefined, values, positionals, true);
+    console.log(JSON.stringify(robotTriage(version)));
+    return;
+  }
+  if ((values.version === true || positionals[0] === 'version') && values.help !== true) {
+    rejectUnknownFlags(positionals[0] === 'version' ? 'version' : undefined, values, positionals);
+    if (positionals[0] === 'version') checkArity('version', positionals);
+    console.log(JSON.stringify(versionDocument(version)));
+    return;
+  }
+  if (values['robot-help'] === true) {
+    rejectUnknownFlags(undefined, values, positionals);
+    console.log(robotDocs(values.json === true));
+    return;
+  }
+  const command = positionals[0];
+  if (!command) {
+    rejectUnknownFlags(undefined, values, positionals);
+    console.log(values.json === true ? JSON.stringify(machineHelp(version)) : HELP);
+    return;
+  }
+  if (!isCommand(command)) throw unknownCommand(command);
+  rejectUnknownFlags(command, values, positionals);
+  if (values.help === true || command === 'help') {
+    if (command === 'help') checkArity('help', positionals);
+    console.log(commandHelp(command === 'help' ? positionals[1] : command));
+    return;
+  }
+  checkArity(command, positionals);
+  const file = positionals[1];
+  const second = positionals[2];
+  if (command === 'capabilities') { console.log(JSON.stringify(capabilities(version))); return; }
+  if (command === 'robot-docs') { console.log(robotDocs(values.json === true)); return; }
   if (command === 'dashboard') {
-    const server = startDashboard(file, Number(v.port ?? 4317));
-    server.on('listening', () => { const address = server.address(); console.log(JSON.stringify({ dashboard: `http://127.0.0.1:${typeof address === 'object' && address ? address.port : 4317}`, watching: resolve(file) })); });
-    server.on('error', error => { console.error(error.message); process.exitCode = 2; });
+    if (!file) fail('dashboard needs one path.', 'intentgauge dashboard RUNS_DIRECTORY');
+    const server = startDashboard(file, portNumber(optionalString(values, 'port')));
+    server.on('listening', () => {
+      const address = server.address();
+      console.log(JSON.stringify({ dashboard: `http://127.0.0.1:${typeof address === 'object' && address ? address.port : 4317}`, watching: resolve(file) }));
+    });
+    server.on('error', error => {
+      console.error(JSON.stringify({ error: error.message, hint: 'intentgauge dashboard RUNS_DIRECTORY --port 4318' }));
+      process.exitCode = 2;
+    });
     return;
   }
   if (command === 'calibrate') {
-    const result = calibrate(await readJson(file), Number(v['min-cases'] ?? 30), Number(v['min-agreement'] ?? .8)); console.log(JSON.stringify(result, null, 2)); process.exitCode = result.eligible ? 0 : 1; return;
+    if (!file) fail('calibrate needs one path.', 'intentgauge calibrate LABELS.json');
+    const result = calibrate(await loadJson(file, 'intentgauge calibrate LABELS.json'), finiteNumber(optionalString(values, 'min-cases'), 'min-cases') ?? 30, finiteNumber(optionalString(values, 'min-agreement'), 'min-agreement') ?? 0.8);
+    console.log(JSON.stringify(result, null, 2));
+    process.exitCode = result.eligible ? 0 : 1;
+    return;
   }
   if (command === 'compare') {
-    const result = compare(parseReport(await readJson(file)), parseReport(await readJson(second!))); console.log(JSON.stringify(result, null, 2)); process.exitCode = result.passed ? 0 : 1; return;
+    if (!file || !second) fail('compare needs a baseline report and a candidate report.', 'intentgauge compare BASELINE/report.json CANDIDATE/report.json');
+    const result = compare(parseReport(await loadJson(file, 'intentgauge compare BASELINE/report.json CANDIDATE/report.json')), parseReport(await loadJson(second, 'intentgauge compare BASELINE/report.json CANDIDATE/report.json')));
+    console.log(JSON.stringify(result, null, 2));
+    process.exitCode = result.passed ? 0 : 1;
+    return;
   }
-  const suite = validateSuite(await readJson(file));
+  if (!file) fail(`${command} needs one path.`, command === 'validate' ? 'intentgauge validate SUITE.json' : 'intentgauge run SUITE.json --replay OUTPUTS.json');
+  const suite = validateSuite(await loadJson(file, `intentgauge validate ${file}`));
   if (command === 'validate') { console.log(JSON.stringify({ valid: true, name: suite.name, cases: suite.cases.length })); return; }
-  if (v.split) {
-    if (!['dev', 'test', 'holdout'].includes(v.split)) throw new Error('Invalid --split');
-    suite.cases = suite.cases.filter(c => c.split === v.split); validateSuite(suite);
+  const split = optionalString(values, 'split');
+  if (split) {
+    if (!['dev', 'test', 'holdout'].includes(split)) throw new UsageError('Invalid --split.', 'intentgauge run SUITE.json --replay OUTPUTS.json --split dev');
+    suite.cases = suite.cases.filter(item => item.split === split);
+    validateSuite(suite);
   }
-  if ([v.replay, v.http, v.module, v.chatbot].filter(Boolean).length !== 1) throw new Error('Choose exactly one target: --replay, --http, --module, --chatbot');
+  const replayPath = optionalString(values, 'replay');
+  const httpUrl = optionalString(values, 'http');
+  const modulePath = optionalString(values, 'module');
+  const chatbotUrl = optionalString(values, 'chatbot');
+  if ([replayPath, httpUrl, modulePath, chatbotUrl].filter(Boolean).length !== 1) {
+    throw new UsageError('Choose exactly one target: --replay, --http, --module, or --chatbot.', 'intentgauge run SUITE.json --replay OUTPUTS.json');
+  }
   let target: Target, judge: Judge | undefined, evaluators: Evaluator[] | undefined;
-  if (v.replay) target = replay(await readJson(v.replay) as Record<string, Observation>);
-  else if (v.module) {
-    const plugin = await import(pathToFileURL(resolve(v.module)).href); target = plugin.target; judge = plugin.judge; evaluators = plugin.evaluators;
-    if (!target) throw new Error('Module must export target');
+  if (replayPath) {
+    const outputs = await loadJson(replayPath, 'intentgauge run SUITE.json --replay OUTPUTS.json');
+    if (!isRecord(outputs)) throw new UsageError('Replay file must be a JSON object.', 'intentgauge run SUITE.json --replay OUTPUTS.json');
+    target = replay(outputs as Record<string, Observation>);
+  } else if (modulePath) {
+    const imported: unknown = await import(pathToFileURL(resolve(modulePath)).href);
+    if (!isRecord(imported) || !isTarget(imported.target)) throw new UsageError('Module must export target', 'intentgauge run SUITE.json --module FILE');
+    target = imported.target;
+    if (imported.judge !== undefined) {
+      if (!isJudge(imported.judge)) throw new UsageError('Module judge must export evaluate.', 'intentgauge run SUITE.json --module FILE');
+      judge = imported.judge;
+    }
+    if (imported.evaluators !== undefined) {
+      if (!Array.isArray(imported.evaluators) || !imported.evaluators.every(isEvaluator)) throw new UsageError('Module evaluators must be an array of {id,revision,evaluate}.', 'intentgauge run SUITE.json --module FILE');
+      evaluators = imported.evaluators;
+    }
   } else {
-    if (!v.revision) throw new Error('--revision is required for live targets');
-    target = v.chatbot ? chatbotTarget(v.chatbot, v.revision, env(v['token-env'])) : httpTarget(v.http!, v.revision, env(v['token-env']));
+    const revision = optionalString(values, 'revision');
+    if (!revision) throw new UsageError('--revision is required for live targets.', `intentgauge run SUITE.json --${chatbotUrl ? 'chatbot' : 'http'} URL --revision ID`);
+    target = chatbotUrl ? chatbotTarget(chatbotUrl, revision, env(optionalString(values, 'token-env'))) : httpTarget(httpUrl ?? fail('--http needs a value.', 'intentgauge run SUITE.json --http URL --revision ID'), revision, env(optionalString(values, 'token-env')));
   }
-  if (v['judge-http']) {
-    if (judge) throw new Error('Configure only one judge');
-    if (!v['judge-revision']) throw new Error('--judge-revision is required');
-    judge = httpJudge(v['judge-http'], v['judge-revision'], env(v['judge-token-env']));
-  } else if (v['judge-revision'] || v['judge-token-env']) throw new Error('Judge options require --judge-http');
-  const report = await run(suite, target, { judge, evaluators, ...(v.concurrency ? { concurrency: Number(v.concurrency) } : {}), ...(v.repetitions ? { repetitions: Number(v.repetitions) } : {}), ...(v['timeout-ms'] ? { timeoutMs: Number(v['timeout-ms']) } : {}) });
-  const directory = await saveReport(report, v.out ?? `runs/${new Date().toISOString().replace(/[:.]/g, '-')}`);
+  const judgeHttp = optionalString(values, 'judge-http');
+  const judgeRevision = optionalString(values, 'judge-revision');
+  const judgeToken = optionalString(values, 'judge-token-env');
+  if (judgeHttp) {
+    if (judge) throw new UsageError('Configure only one judge.', 'intentgauge run SUITE.json --replay OUTPUTS.json --judge-http URL --judge-revision ID');
+    if (!judgeRevision) throw new UsageError('--judge-revision is required.', 'intentgauge run SUITE.json --replay OUTPUTS.json --judge-http URL --judge-revision ID');
+    judge = httpJudge(judgeHttp, judgeRevision, env(judgeToken));
+  } else if (judgeRevision || judgeToken) throw new UsageError('Judge options require --judge-http.', 'intentgauge run SUITE.json --replay OUTPUTS.json --judge-http URL --judge-revision ID');
+  const concurrency = positiveInt(optionalString(values, 'concurrency'), 'concurrency');
+  const repetitions = positiveInt(optionalString(values, 'repetitions'), 'repetitions');
+  const timeoutMs = positiveInt(optionalString(values, 'timeout-ms'), 'timeout-ms');
+  const report = await run(suite, target, { judge, evaluators, ...(concurrency ? { concurrency } : {}), ...(repetitions ? { repetitions } : {}), ...(timeoutMs ? { timeoutMs } : {}) });
+  const directory = await saveReport(report, optionalString(values, 'out') ?? `runs/${new Date().toISOString().replace(/[:.]/g, '-')}`);
   console.log(JSON.stringify({ gatesPassed: report.passed, report: `${directory}/report.json`, html: `${directory}/report.html`, ...report.summary.overall }, null, 2));
   process.exitCode = report.passed ? 0 : 1;
 }
-main().catch(error => { console.error(JSON.stringify({ error: error instanceof Error ? error.message : String(error) })); process.exitCode = 2; });
+
+main().catch(error => {
+  if (isUsageError(error)) {
+    console.error(JSON.stringify({ error: error.message, hint: error.hint }));
+  } else {
+    const message = error instanceof Error ? error.message : String(error);
+    const hint = message.includes('EEXIST') ? 'intentgauge run SUITE.json --replay OUTPUTS.json --out runs/NEW_DIRECTORY'
+      : message.startsWith('No replay output') ? 'intentgauge run SUITE.json --replay OUTPUTS.json'
+      : message.startsWith('Invalid report') ? 'intentgauge compare BASELINE/report.json CANDIDATE/report.json'
+      : undefined;
+    console.error(JSON.stringify(hint ? { error: message, hint } : { error: message }));
+  }
+  process.exitCode = 2;
+});

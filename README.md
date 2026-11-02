@@ -44,6 +44,16 @@ node dist/src/cli.js --help
 
 Exit codes: `0` passes; `1` fails evaluation, regression, or calibration; `2` means invalid configuration, incompatible reports, or file errors. Critical checks and execution errors always block a run. Without explicit gates every check must pass. With gates, ordinary failures may be tolerated according to the configured thresholds.
 
+## For agents
+
+```sh
+node dist/src/cli.js capabilities --json
+node dist/src/cli.js --robot-triage
+node dist/src/cli.js robot-docs guide
+```
+
+`validate`, `run`, `compare`, `calibrate`, `capabilities`, and `version` write one JSON object to stdout. `--json` is accepted on those read commands. A usage mistake exits 2 and writes `{"error","hint"}` to stderr. Copy `hint`. Exit 1 means the evaluation failed, and the result stays on stdout. A mistyped command or flag names the closest spelling in `hint`.
+
 ## What is measured
 
 | Area | Available checks |
