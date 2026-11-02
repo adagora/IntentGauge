@@ -118,4 +118,17 @@ test('read commands accept --json and keep exit 0 and exit 1', async () => {
   assert.equal(replaced.status, 2);
   assert.match(stderrJson(replaced).hint ?? '', /NEW_DIRECTORY/);
   assert.equal(cli('calibrate', 'examples/calibration.json', '--json').status, 0);
+  const topic = cli('help', 'validate', '--json');
+  assert.equal(topic.status, 0);
+  assert.equal(topic.stderr, '');
+  assert.match(JSON.parse(topic.stdout).usage, /intentgauge validate/);
+  const once = cli('dashboard', root, '--once');
+  assert.equal(once.status, 0, once.stderr);
+  assert.equal(once.stderr, '');
+  const saved = JSON.parse(once.stdout) as { reports: Array<{ id: string; trials: Array<{ checks: unknown }> }> };
+  assert.ok(saved.reports.length >= 1);
+  assert.equal(JSON.stringify(saved.reports[0]?.trials).includes('output'), false);
+  const missing = cli('dashboard', join(root, 'missing'), '--once');
+  assert.equal(missing.status, 2);
+  assert.match(stderrJson(missing).hint ?? '', /--once/);
 });

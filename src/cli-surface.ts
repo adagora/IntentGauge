@@ -33,7 +33,7 @@ export const COMMANDS = ['validate', 'run', 'compare', 'calibrate', 'dashboard',
 export type CommandName = typeof COMMANDS[number];
 
 const FLAGS = [
-  'help', 'json', 'version', 'robot-triage', 'robot-help', 'no-color', 'color',
+  'help', 'json', 'version', 'robot-triage', 'robot-help', 'no-color', 'color', 'once',
   'port', 'out', 'replay', 'http', 'module', 'chatbot', 'revision', 'token-env',
   'concurrency', 'repetitions', 'timeout-ms', 'split', 'judge-http', 'judge-revision',
   'judge-token-env', 'min-cases', 'min-agreement',
@@ -42,7 +42,7 @@ const FLAGS = [
 const GLOBAL = new Set(['help', 'json', 'version', 'robot-triage', 'robot-help', 'no-color', 'color']);
 
 const ALLOWED: Record<CommandName, readonly string[]> = {
-  dashboard: ['port'],
+  dashboard: ['port', 'once'],
   validate: [],
   run: ['out', 'replay', 'http', 'module', 'chatbot', 'revision', 'token-env', 'concurrency', 'repetitions', 'timeout-ms', 'split', 'judge-http', 'judge-revision', 'judge-token-env'],
   compare: [],
@@ -58,7 +58,7 @@ const COMMAND_HINT: Record<CommandName, string> = {
   run: 'intentgauge run SUITE.json --replay OUTPUTS.json',
   compare: 'intentgauge compare BASELINE/report.json CANDIDATE/report.json',
   calibrate: 'intentgauge calibrate LABELS.json',
-  dashboard: 'intentgauge dashboard RUNS_DIRECTORY',
+  dashboard: 'intentgauge dashboard RUNS_DIRECTORY --once',
   capabilities: 'intentgauge capabilities --json',
   'robot-docs': 'intentgauge robot-docs guide',
   help: 'intentgauge help run',
@@ -67,6 +67,7 @@ const COMMAND_HINT: Record<CommandName, string> = {
 
 const FLAG_HINT: Record<string, string> = {
   port: 'intentgauge dashboard RUNS_DIRECTORY --port 4317',
+  once: 'intentgauge dashboard RUNS_DIRECTORY --once',
   out: 'intentgauge run SUITE.json --replay OUTPUTS.json --out runs/NEW_DIRECTORY',
   replay: 'intentgauge run SUITE.json --replay OUTPUTS.json',
   http: 'intentgauge run SUITE.json --http URL --revision ID',
@@ -110,6 +111,7 @@ export const PARSE_OPTIONS = {
   'robot-help': { type: 'boolean' },
   'no-color': { type: 'boolean' },
   color: { type: 'string' },
+  once: { type: 'boolean' },
   port: { type: 'string' },
   out: { type: 'string' },
   replay: { type: 'string' },
@@ -137,7 +139,7 @@ Usage:
   intentgauge run SUITE.json (--replay OUTPUTS.json | --http URL | --module FILE | --chatbot URL) [options]
   intentgauge compare BASELINE/report.json CANDIDATE/report.json
   intentgauge calibrate LABELS.json [--min-cases 30] [--min-agreement 0.8]
-  intentgauge dashboard RUNS_DIRECTORY [--port 4317]
+  intentgauge dashboard RUNS_DIRECTORY [--port 4317] [--once]
   intentgauge capabilities [--json]
   intentgauge robot-docs guide
   intentgauge help [COMMAND]
@@ -185,9 +187,9 @@ Exit 2 when the directory already contains a report. Use a new --out.`,
 Exit 0 when the candidate matches. Exit 1 when it regresses. JSON stays on stdout.`,
   calibrate: `intentgauge calibrate LABELS.json [--min-cases 30] [--min-agreement 0.8] [--json]
 Exit 0 when the judge is eligible. Exit 1 when it is not. JSON stays on stdout.`,
-  dashboard: `intentgauge dashboard RUNS_DIRECTORY [--port 4317] [--json]
-Prints one JSON listen line on stdout, then serves until stopped.
-This is not a batch command. Use --robot-triage for a one-shot agent call.`,
+  dashboard: `intentgauge dashboard RUNS_DIRECTORY [--port 4317]
+intentgauge dashboard RUNS_DIRECTORY --once
+--once prints saved-run JSON and exits. Without --once the process serves until stopped.`,
   capabilities: `intentgauge capabilities [--json]
 Prints the version, commands, exit codes, limits, and env contract as JSON.
 --json is accepted and does not change the object.`,
@@ -372,7 +374,7 @@ export function capabilities(version: string) {
       run: { description: 'Evaluate a suite and write a new report directory.', mutates: true, json: true, robot: '--json', side_effects: 'Writes report.json and report.html. Refuses to replace an existing report. --http and --chatbot call a live service.', safe_alternative: 'intentgauge run SUITE.json --replay OUTPUTS.json --out runs/NEW_DIRECTORY', exit_codes: [0, 1, 2] },
       compare: { description: 'Compare a baseline report with a candidate report.', mutates: false, json: true, robot: '--json', exit_codes: [0, 1, 2] },
       calibrate: { description: 'Score judge eligibility against held-out labels.', mutates: false, json: true, robot: '--json', exit_codes: [0, 1, 2] },
-      dashboard: { description: 'Serve saved runs until the process is stopped.', mutates: false, json: true, long_running: true, exit_codes: [0, 2] },
+      dashboard: { description: 'Serve saved runs until stopped. --once prints the saved-run summary as JSON and exits.', mutates: false, json: true, long_running: true, safe_alternative: 'intentgauge dashboard RUNS_DIRECTORY --once', exit_codes: [0, 2] },
       capabilities: { description: 'Print this contract as JSON.', mutates: false, json: true, robot: '--json', exit_codes: [0, 2] },
       'robot-docs': { description: 'Print the agent handbook.', mutates: false, json: true, robot: '--json', args: [{ name: 'guide', required: true, type: 'topic' }], exit_codes: [0, 2] },
       help: { description: 'Print human help for one command or the whole tool.', mutates: false, json: false, exit_codes: [0, 2] },
@@ -429,7 +431,9 @@ Offline checks:
   intentgauge compare BASELINE/report.json CANDIDATE/report.json
 
 validate, run, compare, calibrate, capabilities, and version print JSON. --json is accepted on the read commands and does not change that shape.
-dashboard prints one JSON listen line, then serves HTTP until stopped. It is not a batch command.
+dashboard without --once prints one JSON listen line, then serves HTTP until stopped.
+One-shot read of saved runs:
+  intentgauge dashboard RUNS_DIRECTORY --once
 
 Choose exactly one run target: --replay, --http, --module, or --chatbot.
 Live --http and --chatbot require --revision.
@@ -454,6 +458,7 @@ export function robotTriage(version: string) {
     'intentgauge compare BASELINE/report.json CANDIDATE/report.json',
     'intentgauge capabilities --json',
     'intentgauge robot-docs guide',
+    'intentgauge dashboard RUNS_DIRECTORY --once',
   ];
   const body = {
     tool_version: version,

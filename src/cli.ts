@@ -7,7 +7,7 @@ import { chatbotTarget } from './chatbot.js';
 import { calibrate } from './calibration.js';
 import { compare, parseReport, saveReport } from './reports.js';
 import { run } from './runner.js';
-import { startDashboard } from './dashboard.js';
+import { dashboardSnapshot, startDashboard } from './dashboard.js';
 import { validateSuite } from './validation.js';
 import type { Evaluator, Judge, Observation, Target } from './types.js';
 import {
@@ -84,7 +84,12 @@ async function main() {
   rejectUnknownFlags(command, values, positionals);
   if (values.help === true || command === 'help') {
     if (command === 'help') checkArity('help', positionals);
-    console.log(commandHelp(command === 'help' ? positionals[1] : command));
+    const topic = command === 'help' ? positionals[1] : command;
+    if (values.json === true) {
+      console.log(JSON.stringify(topic ? { command: topic, usage: commandHelp(topic) } : machineHelp(version)));
+      return;
+    }
+    console.log(commandHelp(topic));
     return;
   }
   checkArity(command, positionals);
@@ -93,7 +98,15 @@ async function main() {
   if (command === 'capabilities') { console.log(JSON.stringify(capabilities(version))); return; }
   if (command === 'robot-docs') { console.log(robotDocs(values.json === true)); return; }
   if (command === 'dashboard') {
-    if (!file) fail('dashboard needs one path.', 'intentgauge dashboard RUNS_DIRECTORY');
+    if (!file) fail('dashboard needs one path.', 'intentgauge dashboard RUNS_DIRECTORY --once');
+    if (values.once === true) {
+      try { console.log(JSON.stringify(await dashboardSnapshot(file))); }
+      catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        throw new UsageError(message, 'intentgauge dashboard RUNS_DIRECTORY --once');
+      }
+      return;
+    }
     const server = startDashboard(file, portNumber(optionalString(values, 'port')));
     server.on('listening', () => {
       const address = server.address();

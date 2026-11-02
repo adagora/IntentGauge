@@ -52,7 +52,7 @@ node dist/src/cli.js --robot-triage
 node dist/src/cli.js robot-docs guide
 ```
 
-`validate`, `run`, `compare`, `calibrate`, `capabilities`, and `version` write one JSON object to stdout. `--json` is accepted on those read commands. A usage mistake exits 2 and writes `{"error","hint"}` to stderr. Copy `hint`. Exit 1 means the evaluation failed, and the result stays on stdout. A mistyped command or flag names the closest spelling in `hint`.
+`validate`, `run`, `compare`, `calibrate`, `capabilities`, and `version` write one JSON object to stdout. `--json` is accepted on those read commands. `dashboard RUNS_DIRECTORY --once` prints the saved-run summary and exits. A usage mistake exits 2 and writes `{"error","hint"}` to stderr. Copy `hint`. Exit 1 means the evaluation failed, and the result stays on stdout. A mistyped command or flag names the closest spelling in `hint`.
 
 ## What is measured
 
