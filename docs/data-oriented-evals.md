@@ -53,17 +53,18 @@ contains raw results, reproduction, source fingerprints, compatibility evidence 
 This completes the four ranked kernel targets. The larger product design below remains a
 roadmap; no production feedback system, deployment authority or new evidence-store format
 is claimed as implemented. The runner job-array candidate is unranked and deferred until a
-whole-run profile establishes its priority.
+whole-run profile establishes its priority. Acceptance criteria for that profile and for
+the other open proposals are in [roadmap.md](roadmap.md).
 
 ## The larger objective
 
-Make evalLOL an evidence engine for choosing a model revision for a particular business
+Make IntentGauge an evidence engine for choosing a model revision for a particular business
 intent, with comparable human performance, calibrated scoring, cost coverage and traceable
 failure cases. A single overall accuracy number cannot answer that decision.
 
 The design combines per-intent qualification, human baselines, independent judge calibration,
 asymmetric mistake costs and distinct autonomy tiers. Evaluation remains separate from
-policy enforcement and transaction execution. The design below is an evalLOL proposal
+policy enforcement and transaction execution. The design below is an IntentGauge proposal
 based on the current source. No `as_ask_db` production dataset or
 trace was present in the supplied material or the inspected project docs/integration files.
 

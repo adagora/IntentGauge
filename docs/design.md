@@ -1,10 +1,10 @@
-# evalLOL design and scope
+# IntentGauge design and scope
 
-evalLOL is a local TypeScript evaluation SDK and CLI for RAG pipelines and agents. It executes real functions or HTTP endpoints, or evaluates recorded observations. All integrations share the same observation contract. This permits a Rust service, a Python agent, or a TypeScript RAG pipeline without coupling the core to a framework.
+IntentGauge is a local TypeScript evaluation SDK and CLI for RAG pipelines and agents. It executes real functions or HTTP endpoints, or evaluates recorded observations. All integrations share the same observation contract. This permits a Rust service, a Python agent, or a TypeScript RAG pipeline without coupling the core to a framework.
 
 ## Grounding
 
-evalLOL evaluates per intent using human-reviewed gold sets, independent judge calibration, cost-weighted classification, and evidence for autonomy decisions. Its reports do not alter a production policy or confer approval. A transaction orchestrator and approval service belong to the system under test.
+IntentGauge evaluates per intent using human-reviewed gold sets, independent judge calibration, cost-weighted classification, and evidence for autonomy decisions. Its reports do not alter a production policy or confer approval. A transaction orchestrator and approval service belong to the system under test.
 
 Local chatbot inspection found exact table-cell checks, document authority, ACL rules, abstention, and multi-turn state to be necessary. Its current implementation, rather than its older README request example, determines the SSE adapter contract. See [chatbot integration](chatbot.md).
 
@@ -54,4 +54,6 @@ integer-indexed row ranges, and unique-case support uses reusable bitsets. The r
 finalized metrics for gates. All four measured targets are verified against frozen previous
 implementations and benchmarked. The larger storage/production-feedback extensions remain
 proposed;
-current JSON/SDK contracts are preserved.
+current JSON/SDK contracts are preserved. Open proposals and their acceptance
+criteria are in [roadmap.md](roadmap.md). The visible name is IntentGauge.
+The domain was not purchased. See [rebrand.md](rebrand.md).

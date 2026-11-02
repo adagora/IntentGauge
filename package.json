@@ -1,10 +1,10 @@
 {
-  "name": "evallol",
+  "name": "intentgauge",
   "version": "0.1.0",
-  "description": "Evidence-driven evaluations for RAG systems and agents",
+  "description": "AI evaluation and regression evidence",
   "type": "module",
   "engines": { "node": ">=22" },
-  "bin": { "evallol": "dist/src/cli.js" },
+  "bin": { "intentgauge": "dist/src/cli.js" },
   "exports": { ".": { "types": "./dist/src/index.d.ts", "import": "./dist/src/index.js" } },
   "files": ["dist/src", "README.md", "examples", "docs"],
   "scripts": {

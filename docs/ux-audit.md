@@ -1,4 +1,4 @@
-# UX Audit: evalLOL project dashboard
+# UX Audit: IntentGauge project dashboard
 
 Date: 2026-11-02. Scope: the current CityWheels project dashboard, its calibration workflow,
 and the commands used to reach it. The original simulation cockpit is assessed only where
@@ -63,6 +63,8 @@ clearing no longer leaves calibration stuck in Reading or keeps canceled reviewe
 These checks remain open; the implementation evidence does not establish complete
 accessibility conformance, protected holdout independence or production qualification.
 
+On 2026-11-02 a later environment could bind `127.0.0.1:4317`. HTTP fetches confirmed the default run, the run library, the simulation route, and one full report. That covers only the routing half of check 1. Checks 2 through 6, and the visual half of check 1, were not run. Details are in `docs/verification.md`.
+
 ## Original audit (before remediation)
 
 ## Summary
@@ -98,7 +100,7 @@ comprehension pass is claimed. Application code was not changed during the origi
 **Confidence:** High. **Scope:** Completion of the intended human-scoring workflow.
 
 The Overview says “Next: establish human scoring.” Its action opens a file picker requiring
-an existing evalLOL calibration JSON file. There is no rubric setup, reviewer worksheet,
+an existing IntentGauge calibration JSON file. There is no rubric setup, reviewer worksheet,
 schema download, sample structure, annotation queue, or route to collect two independent
 labels and adjudicate them. A user starting from the app cannot complete the recommended
 next step. The UI honestly describes some of these limits, but that does not supply a path.

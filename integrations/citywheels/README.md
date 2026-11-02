@@ -1,6 +1,6 @@
 # CityWheels project evaluation
 
-Run this from the evalLOL repository:
+Run this from the IntentGauge repository:
 
 ```sh
 npm run citywheels
@@ -75,7 +75,7 @@ lives elsewhere. No CI workflow or production deployment was installed into City
 
 The project dashboard starts with Overview and separates Cases, Human scoring,
 Classification, and Workflow. Human scoring accepts a local calibration JSON file in the
-format consumed by `evallol calibrate`; it reuses the SDK's validation, agreement, Cohen's
+format consumed by `intentgauge calibrate`; it reuses the SDK's validation, agreement, Cohen's
 kappa, and per-intent/rubric eligibility code. Imported labels are not persisted or bound
 to this evaluation run. No human scores are prefilled. Calibration measures reviewer/judge
 agreement; a baseline for actual human workers must be collected separately.

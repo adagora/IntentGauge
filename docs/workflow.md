@@ -1,6 +1,6 @@
-# evalLOL in the delivery workflow
+# IntentGauge in the delivery workflow
 
-evalLOL owns measurement: fixed cases, observed outputs, checks, metrics, and an evaluation
+IntentGauge owns measurement: fixed cases, observed outputs, checks, metrics, and an evaluation
 verdict. A target adapter connects the application. JSON reports and exit codes connect
 measurement to CI, experiment controllers, and release review.
 
@@ -11,7 +11,7 @@ Reviewed gold labels + human performance baseline
                     ↓
 Judge calibration on independently held-out labels
                     ↓
-Candidate → evalLOL → report + exit code
+Candidate → IntentGauge → report + exit code
                     ↓
 Authorized qualification review
                     ↓

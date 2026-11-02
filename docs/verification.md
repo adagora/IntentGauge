@@ -132,3 +132,19 @@ improves about 2.9×. Sampled summary allocation churn falls about 86.8%. These 
 do not establish production/inference speedups, peak-memory savings or reliable tail SLOs.
 The broader evidence-store and production-feedback roadmap remains unimplemented, and the
 UX audit's browser/manual acceptance checks remain unverified under the documented restrictions.
+
+## Local dashboard HTTP check (2026-11-02)
+
+Binding `127.0.0.1:4317` succeeded in this environment. `node dist/src/cli.js dashboard runs --port 4317` served the saved `runs/` directory. The checks below are HTTP responses, not a browser session.
+
+- `GET /` returned 200. The title was `evalLOL · CityWheels help desk / executed offline agent`. The body contained Overview, Cases, Human scoring, Classification, Workflow, the skip link, Change run / refresh, and Simulation laboratory.
+- Saved runs are ordered by file modification time. The newest was the injected-regression report `eb3aa25d-737f-44de-8421-f3d104728214`, created `2026-11-02T17:33:37.078Z`. The first link on `/runs` was the same id. Its dashboard and full report both returned 200.
+- `GET /runs` returned the saved-run library, including the statement that the entries are completed artifacts, not a live production monitor. The page contained 22 run links.
+- `GET /demo` returned the simulation cockpit. Its title was `evalLOL · Evaluation Control`.
+- `GET /api/reports` returned JSON with `reports` and `unreadable`.
+- An unknown path returned 404, POST returned 405, and a non-localhost `Host` returned 403.
+- The fetched pages did not contain "Counting House" or "Yegge".
+
+No browser tool was available. Keyboard focus, Back/Forward, screen-reader announcements, zoom, narrow viewports, file downloads, and the three-second comprehension question were not exercised. The server was stopped after these requests. Those manual checks remain open.
+
+The titles quoted above are what the server returned during this check. The product was renamed to IntentGauge after the check. New pages use that name. Files already saved in `runs/` were left unchanged.

@@ -11,14 +11,15 @@ import { startDashboard } from './dashboard.js';
 import { validateSuite } from './validation.js';
 import type { Evaluator, Judge, Observation, Target } from './types.js';
 
-const help = `evalLOL — evaluations for RAG and agents
+const help = `IntentGauge. AI evaluation and regression evidence.
+Test behavior. See the evidence.
 
 Usage:
-  evallol dashboard RUNS_DIRECTORY [--port 4317]
-  evallol validate SUITE.json
-  evallol run SUITE.json (--replay OUTPUTS.json | --http URL | --module FILE | --chatbot URL) [options]
-  evallol compare BASELINE/report.json CANDIDATE/report.json
-  evallol calibrate LABELS.json [--min-cases 30] [--min-agreement 0.8]
+  intentgauge dashboard RUNS_DIRECTORY [--port 4317]
+  intentgauge validate SUITE.json
+  intentgauge run SUITE.json (--replay OUTPUTS.json | --http URL | --module FILE | --chatbot URL) [options]
+  intentgauge compare BASELINE/report.json CANDIDATE/report.json
+  intentgauge calibrate LABELS.json [--min-cases 30] [--min-agreement 0.8]
 
 Run options:
   --out DIR             New report directory (default runs/<timestamp>)

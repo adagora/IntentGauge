@@ -1,4 +1,6 @@
-# evalLOL
+# IntentGauge
+
+AI evaluation and regression evidence. Test behavior. See the evidence.
 
 A TypeScript evaluation tool for RAG pipelines and agents. Run recorded outputs, local code, or HTTP services against versioned cases, then inspect business-rule failures, retrieval quality, tool behavior, and per-intent risk.
 
@@ -110,7 +112,7 @@ Cost is optional and must use the suite's currency. Omitted means unknown, never
 
 **Local module:** export `target` and optionally `judge` and `evaluators`. See [examples/plugin.mjs](examples/plugin.mjs). Pass its path with `--module`. JavaScript modules work on every supported Node version; TypeScript modules require native TS support or a configured loader. Plugins are trusted code, run in-process, and must honor `AbortSignal`. Deadlines cannot forcibly stop code that ignores cancellation.
 
-**SDK:** after building, import from `./dist/src/index.js` (or `evallol` after installing this local package).
+**SDK:** after building, import from `./dist/src/index.js` (or `intentgauge` after installing this local package).
 
 ```ts
 import { run, validateSuite, readJson, saveReport } from './dist/src/index.js';

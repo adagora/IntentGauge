@@ -1,4 +1,4 @@
-# evalLOL offline kernel baseline
+# IntentGauge offline kernel baseline
 
 Reproduce from the project root:
 
