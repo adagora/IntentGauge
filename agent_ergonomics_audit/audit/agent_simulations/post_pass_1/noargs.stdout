@@ -1,0 +1,42 @@
+IntentGauge. AI evaluation and regression evidence.
+Test behavior. See the evidence.
+
+Usage:
+  intentgauge validate SUITE.json
+  intentgauge run SUITE.json (--replay OUTPUTS.json | --http URL | --module FILE | --chatbot URL) [options]
+  intentgauge compare BASELINE/report.json CANDIDATE/report.json
+  intentgauge calibrate LABELS.json [--min-cases 30] [--min-agreement 0.8]
+  intentgauge dashboard RUNS_DIRECTORY [--port 4317] [--once]
+  intentgauge capabilities [--json]
+  intentgauge robot-docs guide
+  intentgauge help [COMMAND]
+  intentgauge version
+
+Agent:
+  intentgauge --json            Machine-readable help
+  intentgauge --robot-triage    Next commands, recommendations, and health in one JSON object
+  intentgauge --robot-help      Same text as: intentgauge robot-docs guide
+  intentgauge capabilities --json
+  intentgauge --version
+
+Run options:
+  --out DIR              New report directory (default runs/<timestamp>)
+  --revision ID          Required for HTTP and chatbot targets
+  --token-env NAME       Read the authorization token from this environment variable
+  --concurrency N        Concurrent cases (default 4)
+  --repetitions N        Repeated trials (default 1)
+  --timeout-ms N         Timeout per target or evaluator call (default 30000)
+  --judge-http URL       Judge endpoint: {input,output,rubric} to {score,reason}
+  --judge-revision ID    Required with --judge-http
+  --judge-token-env NAME Environment variable for the judge bearer token
+  --split NAME           dev, test, or holdout. Selection changes the suite hash
+
+Module exports: target (required), judge (optional), evaluators (optional).
+Targets receive {id,input}, never assertions. Use .mjs or .js, or .ts on Node with TypeScript support.
+HTTP uses a Bearer token. Chatbot uses the token header that service requires.
+Live targets can have side effects. Replay needs no service and no credential.
+--out must be a new directory. An existing report is left in place.
+Exit codes: 0 gates passed or the command succeeded; 1 evaluation, regression, or calibration failed; 2 configuration or usage error.
+A usage mistake prints {"error","hint"} on stderr. Copy hint. Exit 1 still prints the result on stdout.
+Reports contain outputs. No automatic retries. No deployment or policy changes.
+

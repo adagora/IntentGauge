@@ -1,0 +1,29 @@
+IntentGauge. AI evaluation and regression evidence.
+Test behavior. See the evidence.
+
+Usage:
+  intentgauge dashboard RUNS_DIRECTORY [--port 4317]
+  intentgauge validate SUITE.json
+  intentgauge run SUITE.json (--replay OUTPUTS.json | --http URL | --module FILE | --chatbot URL) [options]
+  intentgauge compare BASELINE/report.json CANDIDATE/report.json
+  intentgauge calibrate LABELS.json [--min-cases 30] [--min-agreement 0.8]
+
+Run options:
+  --out DIR             New report directory (default runs/<timestamp>)
+  --revision ID         Required for HTTP/chatbot, identify model+prompt+index revision
+  --token-env NAME      Read authorization token from this environment variable
+  --concurrency N       Concurrent cases (default 4)
+  --repetitions N       Repeated trials (default 1)
+  --timeout-ms N        Timeout per target/evaluator call (default 30000)
+  --judge-http URL      Judge endpoint: {input,output,rubric} → {score,reason}
+  --judge-revision ID   Required for --judge-http
+  --judge-token-env NAME Environment variable for judge bearer token
+  --split NAME          dev, test or holdout; selection changes suite hash
+
+Module exports: target (required), judge (optional), evaluators (optional).
+Targets receive {id,input}, never assertions. Use .mjs/.js, or .ts on Node with TS support.
+HTTP uses Bearer token. Chatbot uses the exact token header required by that service.
+Live targets can have side effects. Replays require no services or credentials.
+Exit codes: 0 gates passed; 1 evaluation/regression/calibration failed; 2 configuration error.
+Reports contain outputs. No automatic retries; no deployment or policy changes.
+

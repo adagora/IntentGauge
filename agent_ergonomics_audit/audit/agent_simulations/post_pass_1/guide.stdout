@@ -1,0 +1,35 @@
+IntentGauge agent guide
+
+Read the contract:
+  intentgauge capabilities --json
+One call for the next step:
+  intentgauge --robot-triage
+Version:
+  intentgauge version
+
+Exit codes stay fixed:
+  0  the command succeeded, or the gates passed
+  1  evaluation, regression, or calibration failed. Stdout is the result. Do not retry the same inputs.
+  2  configuration or usage error. Stderr is JSON. Copy the hint field.
+
+Stdout is data. Stderr is diagnostics.
+
+Offline checks:
+  intentgauge validate examples/rag/suite.json
+  intentgauge run examples/rag/suite.json --replay examples/rag/outputs.json
+  intentgauge compare BASELINE/report.json CANDIDATE/report.json
+
+validate, run, compare, calibrate, capabilities, and version print JSON. --json is accepted on the read commands and does not change that shape.
+dashboard without --once prints one JSON listen line, then serves HTTP until stopped.
+One-shot read of saved runs:
+  intentgauge dashboard RUNS_DIRECTORY --once
+
+Choose exactly one run target: --replay, --http, --module, or --chatbot.
+Live --http and --chatbot require --revision.
+--out must be a new directory. An existing report is kept. Point --out at a different directory.
+--repetitions, --concurrency, and --timeout-ms belong to run, not validate.
+A live target can change remote state. The offline substitute is --replay.
+
+A mistyped command or flag, such as valdiate or --jsno, exits 2. The hint names the corrected command.
+Help is plain text. NO_COLOR, CI, and --no-color do not change it.
+
