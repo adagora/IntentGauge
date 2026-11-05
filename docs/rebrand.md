@@ -55,10 +55,8 @@ README, docs, CLI help, dashboard titles, and new HTML reports now say IntentGau
 
 Frozen references in `test/fixtures/` and the digests in `artifacts/perf/` compare algorithm output, not the product title. Do not edit them to chase a rename.
 
-## Before a public release
+## Public release
 
-The repository root has no `LICENSE`, `CONTRIBUTING`, or `SECURITY` file. `auto-research-toolkit/` is an untracked separate tree and does not supply a license for this package. Nothing was added here, because the owner has to choose.
+The repository is public under the MIT license in [LICENSE](../LICENSE), the same license as Auditline and Deskhand. `auto-research-toolkit/` is an untracked separate tree and does not supply a license for this package.
 
-Until a license file exists, the honest status is that no reuse is granted. For a public SDK that other applications call, Apache-2.0 gives an explicit patent grant and fits the Apache-2.0 TypeScript dev dependency. MIT is shorter and is enough for a tool with no runtime dependencies. GPL-3.0 would place copyleft duties on applications that ship this code with their own, which fights the current adapter design. The choice is the owner's.
-
-A public repository also needs a security contact and a contributing note that historical runs and frozen performance artifacts stay intact. Those files should wait for the same decision as the license.
+The repository root still has no `CONTRIBUTING` or `SECURITY` file. A public repository needs a security contact and a contributing note that historical runs and frozen performance artifacts stay intact.

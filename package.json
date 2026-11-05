@@ -2,6 +2,7 @@
   "name": "intentgauge",
   "version": "0.1.0",
   "description": "IntentGauge: measures an AI agent one intent at a time, with independent checks, repeated runs, regression gates and human-scored evidence",
+  "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=22"

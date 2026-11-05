@@ -811,7 +811,6 @@ node dist/src/cli.js dashboard runs --port 4318
 - Human packets and calibration imports live in browser memory until you download them.
 - CityWheels coverage is the offline fake provider and the cases in that integration. It is not a claim about OpenAI or Gemini quality.
 - Browser keyboard, screen reader, zoom, and narrow-layout checks of the dashboard are still open. Loopback HTTP was exercised. See [docs/verification.md](docs/verification.md) and [docs/ux-audit.md](docs/ux-audit.md).
-- No license file is in the repository root. See License below.
 - Planned work that is not in the product today, including a whole-run profile gate, an evidence store, human performance baselines, production feedback, and a qualification record, is listed in [docs/roadmap.md](docs/roadmap.md). Do not treat that list as shipped behavior.
 
 | Capability | Now |
@@ -864,8 +863,8 @@ Add gates. `minPassRate: 0.95` allows some normal failures. Any critical failure
 
 ## About contributions
 
-This checkout has no `CONTRIBUTING.md` and no public issue tracker in the tree. Bug reports are welcome. Send them to the owner of the checkout, with the command, the exit code, and the stderr `hint` when there is one.
+I am not accepting pull requests yet, and the tree has no `CONTRIBUTING.md`. Bug reports are welcome as GitHub issues, with the command, the exit code, and the stderr `hint` when there is one.
 
 ## License
 
-The repository root has no `LICENSE` file. Nothing in this README grants a license. Ask the owner before you redistribute the code.
+[MIT](LICENSE). The sample suites, outputs and calibration data under `examples/` and `integrations/` are made up and fall under the same license.
