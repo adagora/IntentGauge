@@ -3,20 +3,38 @@
   "version": "0.1.0",
   "description": "AI evaluation and regression evidence",
   "type": "module",
-  "engines": { "node": ">=22" },
-  "bin": { "intentgauge": "dist/src/cli.js" },
-  "exports": { ".": { "types": "./dist/src/index.d.ts", "import": "./dist/src/index.js" } },
-  "files": ["dist/src", "README.md", "examples", "docs"],
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "intentgauge": "dist/src/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "files": [
+    "dist/src",
+    "README.md",
+    "examples",
+    "docs"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && node --test dist/test/*.test.js",
+    "test": "npm run build && node --test dist/test/*.test.js scripts/feedback-replay.test.mjs",
     "verify": "npm test",
     "citywheels:check": "npm run build && node integrations/citywheels/run.mjs --check",
     "citywheels": "npm run build && node integrations/citywheels/run.mjs",
     "dashboard:export": "npm run build && node scripts/export-dashboard.mjs",
     "dashboard": "npm run build && node dist/src/cli.js dashboard runs",
     "demo": "npm run build && node dist/src/cli.js run examples/rag/suite.json --replay examples/rag/outputs.json",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "citywheels:live": "npm run build && node --env-file-if-exists=../ai-audit/.env integrations/citywheels/run.mjs --live"
   },
-  "devDependencies": { "@types/node": "20.19.43", "typescript": "5.9.3" }
+  "devDependencies": {
+    "@types/node": "20.19.43",
+    "typescript": "5.9.3"
+  }
 }

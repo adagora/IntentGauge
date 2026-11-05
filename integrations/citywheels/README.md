@@ -1,92 +1,63 @@
-# CityWheels project evaluation
+# CityWheels through ai-audit and Quinelings
 
-Run this from the IntentGauge repository:
+This integration executes the JavaScript agent in the sibling ai-audit checkout. The Python help-desk bridge is no longer used.
+
+Build ai-audit first, then run from IntentGauge:
 
 ```sh
+npm --prefix ../ai-audit run build
 npm run citywheels
+npm run citywheels:check
 ```
 
-The command executes the separate Python application, writes a fresh baseline report,
-a standalone project dashboard, a deliberately corrupted candidate, and a comparison.
-It prints all paths. Open the baseline `dashboard.html`. Its Overview shows the result and next action.
-The Cases view contains customer questions, actual answers, and check results.
-Human scoring and Classification have separate views; Workflow explains integration.
-`report.html` includes the full normalized tool trace.
+Set `CITYWHEELS_ROOT` to the ai-audit checkout when it is not a sibling directory. Offline mode needs no Python, `.env`, API key or paid provider. The provider boundary is a scripted fake model; the real agent loop, tools, proxy restrictions and Quinelings refund rule execute. Offline results measure integration behavior, not live-model quality or general injection resistance.
 
-The default checkout is:
-`/Users/gora/AI_Project/EternalChat copy/help-desk-agent/help-desk-agent`.
-Override it with `CITYWHEELS_ROOT`; override Python with `CITYWHEELS_PYTHON`.
+## Full workflow with a real model
 
-## What is executed
+Keep `OPENAI_API_KEY` in the sibling ai-audit `.env` (never commit it), or export it in your shell. From IntentGauge:
 
-`bridge.py` imports and calls the application's `run_agent` and `FakeModel` directly.
-The real loop runs `search_policies`, `get_booking`, and `calculate_refund` as requested.
-It does not read `.env`, instantiate hosted providers, or make paid model calls.
-Python bytecode writes are disabled. Each case gets a temporary data copy; the original
-checkout stays unchanged. The stored-price intervention edits only its temporary copy.
-The adapter passes no reference assertions to the agent.
+```sh
+npm run citywheels:live -- --case refund-1002
+npm run citywheels:live
+npm run dashboard
+```
 
-`target.mjs` hashes the adapter, bridge, application Python sources, and policy/booking
-files into the target revision. It records actual tool outputs and policy passages;
-it does not invent predicted intents, citations, target costs, or semantic scores.
-A source-booking comparison and a fixture comparison detect writes during each call.
+The first command runs one real refund question. The second runs all 21 cases. Both make billable OpenAI calls using the existing example default, `gpt-4o-mini`. Select a different compatible Chat Completions tool-calling model with `--model NAME`. The implementation follows [OpenAI's function-calling loop](https://developers.openai.com/api/docs/guides/function-calling).
 
-## Coverage and limitations
+The live command explicitly loads `../ai-audit/.env` when it exists. For another key-file location, build IntentGauge then use `node --env-file=/path/to/.env integrations/citywheels/run.mjs --live`. `CITYWHEELS_ROOT` changes the application location, not that key-file path. Missing credentials fail before any cases execute.
 
-The 20 imported questions retain the project's expectations. Six added cases cover:
-exactly 48 hours, one second below 48 hours, exactly 24 hours, one second below 24 hours,
-a hostile refund instruction, and a changed stored rental price. Numeric oracles are fixed
-from the documented policy and booking fields, not computed by the tested refund function.
-The original `holdout` labels are preserved as metadata, but these questions have been
-inspected and are not a protected independent holdout.
+Open the dashboard URL printed by `npm run dashboard`, then select the newest `citywheels-live-...` run. Inspect customer questions, actual model answers, tool results, QDL decisions and individual checks. A failing check makes the command exit 1, but its report and dashboard are still saved. Live runs do not execute the deliberately corrupted candidate or silently repeat paid calls. Use `--repetitions 3` explicitly for repeated runs; it multiplies API use. The suite and relation checks are identical across provider modes, while provider/model enter the target identity. Single-case smoke tests have a filtered suite and do not run cross-case relations.
 
-A passing offline fake-provider run establishes this code path's behavior. It does not
-establish OpenAI/Gemini answer quality, general prompt-injection resistance, authorization,
-or correctness on representative real customer conversations. String checks are literal,
-not semantic judgments. No business mistake-cost matrix has been invented.
+These are development fixtures, not real customer traffic. Some checks are literal substrings and may reject a correct paraphrase or currency format; inspect the failed check and actual answer. Do not rewrite expected refund amounts to match a model mistake. The adapter reports no estimated API cost. Passing this small suite is not proof of production reliability.
 
-The deliberate regression changes the baseline CW-1002 refund from 340 to 342 EUR in a
-wrapper's returned answer and observation. Its report is explicitly labeled injected;
-it is a negative control, not a discovered application defect.
+Refund amount checks accept equivalent notation such as `340 EUR`, `EUR 340`, and `€340.`. The original answer remains unchanged in the report. Test the integration checks without API calls:
 
-No intent classifier is emitted by the application, so classification precision/recall and
-the confusion matrix are unavailable. The dashboard shows that limitation explicitly.
+```sh
+node --test integrations/citywheels/live.test.mjs
+```
 
-To refresh the suite after deliberately changing project scenarios:
+If an evaluator bug is fixed, rescore saved answers without paying for another model run:
+
+```sh
+node integrations/citywheels/rescore.mjs runs/citywheels-live-DATE/report.json
+```
+
+This requires an identical suite hash so the expected outcomes cannot silently change. It saves a separate dashboard labeled `RECORDED RESPONSES / rescore`, plus source-report identity. Original reports remain unchanged. Its timing measures replay; each observation retains `originalLatencyMs` from the source run. This is not a new live application run.
+
+Each evaluation calls `examples/citywheels/scripts/citywheels-intentgauge.mjs` in a separate Node process. It copies booking/policy data into a temporary directory, applies only an explicitly requested rental-price override, and uses the requested fixed clock. It starts a real in-process ai-audit proxy with a fake upstream in offline mode or OpenAI in live mode, runs the actual agent, and returns its answer, actual tool calls/results, retrieved policy passages, refund and audit record IDs/hashes. It verifies the chain and checks that booking data remained unchanged. Case inputs, copied fixtures, observations and audit logs are retained in the ai-audit checkout under `live/evaluations/`. Each completed baseline case also receives `evaluation-link.json` pointing back to this report. Run `node scripts/evaluations.mjs` from ai-audit to list evidence, or use its `--console CASE_DIRECTORY` option to inspect the real log.
+
+The target receives only case input, never assertions. The target revision hashes the adapter, worker, built ai-audit code, example agent/data/rule and bundled SDK archive. Rebuild ai-audit after source changes. No synthetic intent predictions, citations or cost estimates are emitted.
+
+The suite has 21 development cases: 15 existing ai-audit CityWheels questions, four exact/one-second-below refund boundaries, an instruction intervention and a stored-price intervention. It replaces the old Python-specific suite; booking-change and other Python-only scenarios are not covered by this target. Expectations remain explicit and must be reviewed. Refresh deliberately with:
 
 ```sh
 node integrations/citywheels/prepare.mjs
 ```
 
-Review oracle changes before accepting new scores. Never update expectations merely to
-match an incorrect new output.
+The normal command writes baseline and explicitly injected-regression dashboards. The injected wrapper changes the observed CW-1002 amount from 340 to 342 EUR; this is a negative control, not an actual discovered application failure. `citywheels:check` runs only the baseline and exits nonzero for failed checks or execution errors. Both commands save real evaluation reports usable by `npm run dashboard`.
 
-## Use as a workflow gate
+Compared with the previous integration, the returned refund fields are the ai-audit tool's actual fields, such as `total_refund_eur`. We do not pretend its output is the Python agent's schema. The source holdout labels are not carried over: all these inspected cases are development tests.
 
-```sh
-npm run citywheels:check
-```
+## Both help-desk implementations
 
-This runs only the baseline candidate, saves fresh evidence, and exits 0 when its fixed
-suite passes or 1 when it fails. It does not run the deliberate-regression demonstration.
-An execution/configuration error also exits nonzero. A CI job or research controller can
-invoke this command and retain its output artifacts. Set `CITYWHEELS_ROOT` when the checkout
-lives elsewhere. No CI workflow or production deployment was installed into CityWheels.
-
-The project dashboard starts with Overview and separates Cases, Human scoring,
-Classification, and Workflow. Human scoring accepts a local calibration JSON file in the
-format consumed by `intentgauge calibrate`; it reuses the SDK's validation, agreement, Cohen's
-kappa, and per-intent/rubric eligibility code. Imported labels are not persisted or bound
-to this evaluation run. No human scores are prefilled. Calibration measures reviewer/judge
-agreement; a baseline for actual human workers must be collected separately.
-
-
-Human scoring also offers **Start a human review**: define a rubric, download two separate
-reviewer worksheets, import their completed labels and adjudicate disagreements before
-exporting development review evidence. Download labels before closing or reloading; there
-is no automatic persistence or reviewer authentication. The inspected CityWheels cases
-remain development examples rather than a protected calibration holdout.
-
-The injected candidate's dashboard embeds the baseline comparison, with links to new,
-recovered and persistent failures. `npm run dashboard` serves the newest saved run and a
-run selector; the older simulation is available through Simulation laboratory.
+The Python application remains a comparison target. From ai-audit, run `node examples/citywheels/scripts/compare-helpdesks.mjs` to execute both agents on shared business checks and retain both reports plus side-by-side answers in ai-audit. Offline mode uses distinct scripted providers and cannot rank live-model reliability. A repeated live comparison is available from ai-audit: `node --env-file=.env scripts/compare-helpdesks.mjs --live --model gpt-4o-mini --repetitions 3`. This is billable and executes 126 customer questions. Both applications receive the same requested model and fixtures; prompts and tools remain their own. Business outcomes and ai-audit control checks have separate reports, and every repetition is retained. Storm escalation accepts either policy retrieval or refund-tool routing when the customer is directed to staff. See `docs/helpdesk-experiment-blueprint.md` in ai-audit for the architecture and remaining stages.
