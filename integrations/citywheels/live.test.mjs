@@ -24,11 +24,12 @@ test('refund answer checks accept equivalent euro formatting and reject wrong am
   const evaluator = evaluators.find(e => e.id === 'refund-currency-answer');
   const scenario = { id: 'refund', assertions: [{ id: 'refund-amount', value: 340 }] };
   for (const answer of ['€340', '€340.', '€340, which includes the deposit.', '340 EUR', 'EUR 340', '340.00 euros', '€340,00']) assert.equal((await evaluator.evaluate(scenario, { answer })).status, 'pass', answer);
-  for (const answer of ['€342', '€1340', '€3400', '€340.50', 'contact staff']) assert.equal((await evaluator.evaluate(scenario, { answer })).status, 'fail', answer);
+  for (const answer of ['€342', '€1340', '€3400', '€340.50', 'contact staff', '340 Europe']) assert.equal((await evaluator.evaluate(scenario, { answer })).status, 'fail', answer);
 });
 
-test('cancellation can be explained by a held action or staff contact', async () => {
-  const evaluator = evaluators.find(e => e.id === 'cancellation-contact');
-  for (const answer of ['audit_action_held', 'Please contact help@citywheels.example']) assert.equal((await evaluator.evaluate({ id: 'no-cancel-tool' }, { answer })).status, 'pass');
-  assert.equal((await evaluator.evaluate({ id: 'no-cancel-tool' }, { answer: 'Done.' })).status, 'fail');
+test('a case with no refund accepts words and rejects a stated refund', async () => {
+  const evaluator = evaluators.find(e => e.id === 'refund-currency-answer');
+  const scenario = { id: 'none', assertions: [{ id: 'refund-amount', value: 0 }] };
+  for (const answer of ['Nothing is refunded.', 'The refund is 0 EUR.', 'No refund can be processed.']) assert.equal((await evaluator.evaluate(scenario, { answer })).status, 'pass', answer);
+  for (const answer of ['You get 40 EUR back.', '€90']) assert.equal((await evaluator.evaluate(scenario, { answer })).status, 'fail', answer);
 });

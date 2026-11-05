@@ -1,4 +1,4 @@
-import { run, validateSuite, readJson, saveReport, compare, hash } from '../../dist/src/index.js';
+import { run, validateSuite, readJson, saveReport, compare } from '../../dist/src/index.js';
 import { renderProjectDashboard } from '../../dist/src/dashboard-project.js';
 import { createTarget, evaluators } from './target.mjs';
 import { writeFile } from 'node:fs/promises';
@@ -32,10 +32,6 @@ const options = { concurrency: live ? 2 : 4, timeoutMs: live ? 180000 : 30000, r
 console.log(`${live ? 'LIVE OpenAI calls (billable)' : 'Offline scripted provider'}: ${suite.cases.length} case(s), ${repetitions} repetition(s).`);
 const baseline = await run(suite, target, options);
 await saveReport(baseline, directory);
-for (const row of baseline.results) {
-  const evidence = row.output?.data?.audit?.evidenceDirectory;
-  if (evidence) await writeFile(evidence + '/evaluation-link.json', JSON.stringify({ caseId: row.caseId, report: directory + '/report.json', reportHash: hash(baseline), status: row.status, checks: row.checks }, null, 2) + '\n', { mode: 0o600 });
-}
 await writeFile(directory + '/suite.json', JSON.stringify(suite, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
 await writeFile(directory + '/dashboard.html', renderProjectDashboard(baseline, suite), { flag: 'wx', mode: 0o600 });
 const summary = { provider: live ? 'openai' : 'fake', model: live ? parsed['--model'] ?? 'gpt-4o-mini' : 'fake-helpdesk', cases: suite.cases.length, baselinePassed: baseline.passed, report: directory + '/report.json', dashboard: directory + '/dashboard.html' };

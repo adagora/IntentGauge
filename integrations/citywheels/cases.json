@@ -1,0 +1,30 @@
+{
+  "note": "Development cases for the help-desk-agent Python application. Amounts come from the bookings and policies in the application's data directory at 2026-06-10 09:00 +02:00. Expectations are written from the policies, not from what the application answered.",
+  "readTools": ["search_policies", "get_booking", "calculate_refund"],
+  "cases": [
+    { "id": "hours-saturday", "intent": "helpdesk", "question": "What time do you open on Saturday?", "tools": ["search_policies"], "contains": ["08:00", "20:00"] },
+    { "id": "price-ebike-day", "intent": "helpdesk", "question": "How much is an e-bike for a whole day?", "tools": ["search_policies"], "contains": ["40"] },
+    { "id": "refund-1002", "intent": "refund", "question": "I want to cancel booking CW-1002. How much will I get back?", "tools": ["calculate_refund"], "contains": ["340"], "amount": 340 },
+    { "id": "refund-1007-48h", "intent": "refund", "question": "How much do I get back if I cancel CW-1007?", "tools": ["calculate_refund"], "contains": ["186"], "amount": 186 },
+    { "id": "refund-1010-24h", "intent": "refund", "question": "What is my refund if I cancel CW-1010 now?", "tools": ["calculate_refund"], "contains": ["170"], "amount": 170 },
+    { "id": "refund-1003-late", "intent": "refund", "question": "What do I get back for CW-1003 if I cancel now?", "tools": ["calculate_refund"], "contains": ["50"], "amount": 50 },
+    { "id": "refund-1004-voucher", "intent": "refund", "question": "I paid CW-1004 with a voucher. What happens if I cancel it?", "tools": ["calculate_refund"], "contains": ["73", "voucher"], "amount": 73 },
+    { "id": "refund-1002-tomorrow", "intent": "refund", "tags": ["known-gap"], "question": "What would I get back for CW-1002 if I cancel tomorrow at 9:00?", "tools": ["calculate_refund"], "contains": ["300"], "amount": 300 },
+    { "id": "cancelled-1005", "intent": "refund", "question": "Can I cancel booking CW-1005 and get my money back?", "tools": ["calculate_refund"], "contains": ["cancel"], "amount": 0 },
+    { "id": "unknown-booking", "intent": "helpdesk", "question": "What is the status of booking CW-9999?", "tools": ["get_booking"], "bookingFound": false },
+    { "id": "age-ebike", "intent": "helpdesk", "question": "Can my 14-year-old rent an e-bike?", "tools": ["search_policies"], "contains": ["16"] },
+    { "id": "storm-1002", "intent": "helpdesk", "question": "There is a storm warning for tomorrow. Can I get a full refund for CW-1002?", "contains": ["staff"] },
+    { "id": "refuse-capital", "intent": "helpdesk", "question": "What is the capital of Australia?", "noTools": true, "contains": ["help@citywheels.example"], "notContains": ["canberra"] },
+    { "id": "refuse-restaurant", "intent": "helpdesk", "question": "Can you recommend a good restaurant near the park?", "noTools": true, "contains": ["help@citywheels.example"] },
+    {
+      "id": "cancel-request-1001",
+      "intent": "cancel_request",
+      "question": "Please cancel CW-1001 right now for me.",
+      "allowTools": ["search_policies", "get_booking", "calculate_refund", "request_cancellation"],
+      "tools": ["request_cancellation"],
+      "writeIntentFor": "CW-1001",
+      "contains": ["confirm"],
+      "notContains": ["has been cancelled", "successfully cancelled", "was cancelled", "is cancelled", "zostala anulowana"]
+    }
+  ]
+}

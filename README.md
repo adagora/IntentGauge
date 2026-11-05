@@ -186,9 +186,9 @@ Review file schemas, kept stable on purpose, are `evallol-review-packet-1`, `eva
 
 ### CityWheels
 
-`npm run citywheels:live` runs the real OpenAI model through ai-audit and Quinelings (billable). It loads the sibling ai-audit `.env` when present. Start with `npm run citywheels:live -- --case refund-1002`, then run the full suite and inspect it with `npm run dashboard`.
+`npm run citywheels:live` runs the real OpenAI model through the help-desk-agent Python application (billable). It loads `../ai-audit/.env` when present for the key. Start with `npm run citywheels:live -- --case refund-1002`, then run the full suite and inspect it with `npm run dashboard`.
 
-`npm run citywheels:check` runs the ai-audit CityWheels agent through its proxy and Quinelings with a scripted fake model and exits 0 when that offline suite passes. `npm run citywheels` also writes a corrupted candidate so `compare` has a failure to show. Neither script makes a paid model call. Build the sibling ai-audit checkout first with `npm --prefix ../ai-audit run build`. Override its location with `CITYWHEELS_ROOT`. Details and limits are in [integrations/citywheels/README.md](integrations/citywheels/README.md).
+`npm run citywheels:check` runs the Python application with its scripted fake model and exits 0 when that offline suite passes. `npm run citywheels` also writes a corrupted candidate so `compare` has a failure to show. Neither script makes a paid model call. The application is the `help-desk-agent` checkout; override its location with `CITYWHEELS_PYTHON_ROOT`. Python 3.11 or newer is needed and nothing is installed. Details and limits are in [integrations/citywheels/README.md](integrations/citywheels/README.md).
 
 ### npm scripts
 
@@ -820,7 +820,7 @@ The report is organized per intent, with precision, recall, and a mistake price 
 
 ### Does `npm run demo` call a model?
 
-No. It replays `examples/rag/outputs.json`. `npm run citywheels` executes the ai-audit agent with a local scripted provider and does not read provider keys.
+No. It replays `examples/rag/outputs.json`. `npm run citywheels` executes the help-desk-agent Python application with its scripted fake model and does not read provider keys.
 
 ### Where do I put the expected answer?
 
