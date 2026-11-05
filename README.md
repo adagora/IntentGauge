@@ -31,6 +31,10 @@ The package is not published. There is no curl installer and no Homebrew formula
 
 **The solution.** IntentGauge runs a versioned suite, withholds the expected answers from the system under test, and writes `report.json` plus a searchable `report.html`. Compare two reports when you want a regression list. Calibrate a judge on held-out human labels when a rubric needs one.
 
+![The IntentGauge dashboard: the result of a run, the cases and the checks of one trial, human scoring, the confusion matrix, the workflow and the full evidence report.](docs/media/intentgauge-dashboard.gif)
+
+The recording shows `npm run dashboard` on a saved run of the CityWheels help-desk agent: 63 of 63 trials on `gpt-4o-mini`, with made-up bookings and no real customer.
+
 ### Why use IntentGauge?
 
 | Feature | What you get |
