@@ -1,7 +1,7 @@
 {
   "name": "intentgauge",
   "version": "0.1.0",
-  "description": "AI evaluation and regression evidence",
+  "description": "IntentGauge: measures an AI agent one intent at a time, with independent checks, repeated runs, regression gates and human-scored evidence",
   "type": "module",
   "engines": {
     "node": ">=22"
