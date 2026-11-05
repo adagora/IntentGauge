@@ -3,3 +3,6 @@ dist/
 runs/
 *.tsbuildinfo
 .env*
+.DS_Store
+Folder bez nazwy/
+auto-research-toolkit/
