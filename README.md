@@ -31,9 +31,17 @@ The package is not published. There is no curl installer and no Homebrew formula
 
 **The solution.** IntentGauge runs a versioned suite, withholds the expected answers from the system under test, and writes `report.json` plus a searchable `report.html`. Compare two reports when you want a regression list. Calibrate a judge on held-out human labels when a rubric needs one.
 
-![The IntentGauge dashboard: the result of a run, the cases and the checks of one trial, human scoring, the confusion matrix, the workflow and the full evidence report.](docs/media/intentgauge-dashboard.gif)
+![A live run: the command output, the regression diff from compare, the library of saved runs, a blocked evaluation, the run identity, a comparison with a baseline, and the cases with their checks.](docs/media/live-run-and-cases.gif)
 
-The recording shows `npm run dashboard` on a saved run of the CityWheels help-desk agent: 63 of 63 trials on `gpt-4o-mini`, with made-up bookings and no real customer.
+The first recording follows a live run. `npm run citywheels:live -- --repetitions 3` calls `gpt-4o-mini` through the [Deskhand](https://github.com/adagora/deskhand) help-desk agent, on made-up CityWheels bookings. One trial of 63 failed, so the dashboard says "Evaluation blocked". The run is compared with an earlier run twice: with `compare` in the terminal and with **Compare with a baseline** in the dashboard (one new failing trial, six recovered). Paths in the terminal output are shortened.
+
+![Human review: a scoring question, two reviewer packets, the label file of each reviewer, agreement and Cohen's kappa, a third reviewer's decision on each disagreement, the reviewed dataset and a calibration import.](docs/media/human-review.gif)
+
+The second recording shows human scoring on that run. The scoring question and every label are example input that was made up for the recording. They are not an assessment of the agent. The calibration file is the bundled synthetic example.
+
+![Views and evidence: the classification page, the workflow page, the full evidence report of the live run and the simulation laboratory.](docs/media/views-and-evidence.gif)
+
+The third recording shows the classification page, the workflow page, the full evidence report of the live run and the simulation laboratory. The CityWheels agent returns no intent, so its classification page says so. The offline RAG demo suite fills the page. The simulation laboratory uses illustrative airline numbers and makes no model calls.
 
 ### Why use IntentGauge?
 
